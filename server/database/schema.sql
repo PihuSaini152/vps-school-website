@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS vps_school CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE vps_school;
+CREATE TABLE IF NOT EXISTS admission_enquiries (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  student_name VARCHAR(150) NOT NULL,
+  parent_name VARCHAR(150) NOT NULL,
+  class_name VARCHAR(40) NOT NULL,
+  phone VARCHAR(30) NOT NULL,
+  email VARCHAR(190) NULL,
+  message TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS notices (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  body TEXT NOT NULL,
+  is_published BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO notices(title,body)
+SELECT 'Welcome','Official school announcements will appear here after confirmation.'
+WHERE NOT EXISTS (SELECT 1 FROM notices);

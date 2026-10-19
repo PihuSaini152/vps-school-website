@@ -1,0 +1,1 @@
+Express API starter. `.env.example` की copy `.env` बनाएँ, MySQL settings भरें, फिर `npm install` और `npm run dev` चलाएँ. Admin authentication अभी implemented नहीं है.\n

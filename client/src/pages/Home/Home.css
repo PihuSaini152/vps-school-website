@@ -1,0 +1,357 @@
+
+.vb-home {
+  width: 100%;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.vb-home *,
+.vb-home *::before,
+.vb-home *::after {
+  box-sizing: border-box;
+}
+
+.vb-home a {
+  text-decoration: none;
+}
+
+.vb-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 590px;
+  overflow: hidden;
+  background: #10294b;
+}
+
+/* Both school buildings in one image */
+.vb-hero-image {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: fill;
+  object-position: center;
+}
+
+/* Text remains readable while the right building stays visible */
+.vb-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 22, 44, 0.92) 0%,
+    rgba(5, 22, 44, 0.82) 36%,
+    rgba(5, 22, 44, 0.47) 56%,
+    rgba(5, 22, 44, 0.08) 100%
+  );
+}
+
+.vb-hero-container {
+  width: min(1240px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 65px 0;
+}
+
+.vb-hero-content {
+  width: min(650px, 59%);
+  color: #ffffff;
+  animation: vb-enter 0.8s ease-out both;
+}
+
+.vb-eyebrow {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #6de1d2;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+}
+
+.vb-hero-content h1 {
+  margin: 0;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(40px, 4.5vw, 64px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.18);
+}
+
+.vb-hero-content h1 span {
+  display: block;
+  margin-top: 5px;
+}
+
+.vb-hero-content h2 {
+  margin: 18px 0 0;
+  color: #e3edff;
+  font-size: clamp(17px, 1.8vw, 22px);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.vb-accent {
+  display: flex;
+  gap: 5px;
+  margin: 22px 0 18px;
+}
+
+.vb-accent span {
+  width: 32px;
+  height: 4px;
+  border-radius: 5px;
+}
+
+.vb-accent span:nth-child(1) {
+  background: #36c7a5;
+}
+
+.vb-accent span:nth-child(2) {
+  background: #ed0751;
+}
+
+.vb-accent span:nth-child(3) {
+  background: #ffd45a;
+}
+
+.vb-description {
+  max-width: 570px;
+  margin: 0;
+  color: #f1f5fc;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.vb-board {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 15px 0 0;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.vb-board-dot {
+  color: #69e0d1;
+  font-size: 17px;
+}
+
+/* Admission and Contact buttons */
+.vb-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 27px;
+}
+
+.vb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 19px;
+  min-height: 51px;
+  padding: 13px 20px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 750;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.vb-btn:hover {
+  transform: translateY(-3px);
+}
+
+.vb-btn-arrow {
+  font-size: 19px;
+}
+
+.vb-btn-admission {
+  background: #ed0751;
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgba(237, 7, 81, 0.25);
+}
+
+.vb-btn-admission:hover {
+  background: #c50042;
+  color: #ffffff;
+  box-shadow: 0 12px 25px rgba(237, 7, 81, 0.32);
+}
+
+.vb-btn-contact {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  backdrop-filter: blur(5px);
+}
+
+.vb-btn-contact:hover {
+  background: #ffffff;
+  color: #173c72;
+}
+
+.vb-tagline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.vb-tagline span {
+  color: #6de1d2;
+}
+
+.vb-color-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: 5px;
+}
+
+.vb-color-strip span:nth-child(1) {
+  width: 34%;
+  background: #168c54;
+}
+
+.vb-color-strip span:nth-child(2) {
+  width: 33%;
+  background: #ed0751;
+}
+
+.vb-color-strip span:nth-child(3) {
+  flex: 1;
+  background: #f4c844;
+}
+
+@keyframes vb-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .vb-hero {
+    min-height: 620px;
+  }
+
+  .vb-hero-container {
+    width: calc(100% - 44px);
+  }
+
+  .vb-hero-content {
+    width: 68%;
+  }
+
+  .vb-hero-overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(5, 22, 44, 0.93),
+      rgba(5, 22, 44, 0.7) 60%,
+      rgba(5, 22, 44, 0.25)
+    );
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .vb-hero {
+    min-height: 720px;
+    align-items: flex-end;
+  }
+
+  .vb-hero-image {
+    object-fit: fill;
+  }
+
+  .vb-hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 22, 44, 0.18) 0%,
+      rgba(5, 22, 44, 0.65) 28%,
+      rgba(5, 22, 44, 0.96) 60%,
+      rgba(5, 22, 44, 0.99) 100%
+    );
+  }
+
+  .vb-hero-container {
+    width: calc(100% - 34px);
+    padding: 300px 0 42px;
+  }
+
+  .vb-hero-content {
+    width: 100%;
+  }
+
+  .vb-eyebrow {
+    margin-bottom: 15px;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+  }
+
+  .vb-hero-content h1 {
+    font-size: clamp(34px, 9vw, 46px);
+    letter-spacing: -0.7px;
+  }
+
+  .vb-hero-content h2 {
+    margin-top: 13px;
+    font-size: 16px;
+  }
+
+  .vb-description {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .vb-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .vb-btn {
+    width: 100%;
+    min-height: 49px;
+  }
+
+  .vb-tagline {
+    margin-top: 23px;
+    font-size: 9px;
+    letter-spacing: 1.4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-hero-content {
+    animation: none;
+  }
+
+  .vb-home * {
+    transition: none !important;
+  }
+}

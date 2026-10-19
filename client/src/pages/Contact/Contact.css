@@ -1,0 +1,1 @@
+.contact-page{min-height:35vh;padding:48px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.contact-page article{display:flex;gap:14px;padding:22px;border:1px solid var(--border);border-radius:14px}.contact-page svg{color:var(--blue);flex-shrink:0}.contact-page p{color:var(--muted);line-height:1.6}@media(max-width:800px){.contact-page{grid-template-columns:1fr}}\n
