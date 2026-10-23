@@ -1,21 +1,20 @@
 
 /* =========================================
-   VPS SCHOOL — ABOUT PAGE
-   Responsive premium blue-white theme
-========================================= */
+   VPS ABOUT PAGE — RESPONSIVE STYLES
+   ========================================= */
 
 .vb-about-page {
-  --vb-navy: #173967;
-  --vb-blue: #356bd4;
-  --vb-teal: #119c9a;
-  --vb-pink: #ed1761;
-  --vb-text: #253957;
-  --vb-muted: #687993;
-  --vb-border: #e3ebf7;
+  --vb-navy: #183966;
+  --vb-navy-dark: #10294c;
+  --vb-pink: #f04f83;
+  --vb-text: #253b59;
+  --vb-muted: #687b95;
+  --vb-light: #f5f8fd;
+  --vb-border: #e1e8f2;
   width: 100%;
   overflow: hidden;
+  background: #fff;
   color: var(--vb-text);
-  background: #ffffff;
   font-family: inherit;
 }
 
@@ -25,33 +24,39 @@
   box-sizing: border-box;
 }
 
-.vb-about-page a {
-  text-decoration: none;
-}
-
 .vb-about-page img {
   max-width: 100%;
 }
 
-.vb-about-section {
-  width: min(100% - 64px, 1240px);
-  margin-inline: auto;
-  padding-block: 90px;
+.vb-about-page a {
+  text-decoration: none;
 }
 
+.vb-about-page button,
+.vb-about-page a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vb-about-section {
+  width: min(1240px, calc(100% - 64px));
+  margin-inline: auto;
+}
+
+/* SHARED SECTION HEADING */
+
 .vb-about-heading {
-  max-width: 800px;
-  margin: 0 auto 42px;
+  max-width: 760px;
+  margin: 0 auto 48px;
   text-align: center;
 }
 
 .vb-about-eyebrow {
   display: inline-block;
-  margin-bottom: 13px;
-  color: var(--vb-teal);
+  margin-bottom: 14px;
+  color: var(--vb-pink);
   font-size: 12px;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 2.2px;
   line-height: 1.6;
   text-transform: uppercase;
 }
@@ -60,54 +65,53 @@
 .vb-about-intro-copy h2 {
   margin: 0;
   color: var(--vb-navy);
-  font-size: clamp(30px, 3.5vw, 46px);
+  font-size: clamp(30px, 4vw, 46px);
   font-weight: 800;
   line-height: 1.2;
-  letter-spacing: -1.2px;
+  letter-spacing: -1.3px;
 }
 
 .vb-about-heading h2 span,
 .vb-about-intro-copy h2 span {
-  color: var(--vb-blue);
+  color: var(--vb-pink);
 }
 
 .vb-about-heading > p {
-  max-width: 680px;
-  margin: 16px auto 0;
+  max-width: 650px;
+  margin: 17px auto 0;
   color: var(--vb-muted);
-  font-size: 15px;
-  line-height: 1.9;
+  font-size: 16px;
+  line-height: 1.85;
 }
 
 /* =========================================
-   AUTOMATIC SCHOOL IMAGE SLIDER
-========================================= */
+   TOP IMAGE SLIDER
+   ========================================= */
 
 .vb-about-slider {
   position: relative;
-  isolation: isolate;
   width: 100%;
-  height: clamp(280px, 37vw, 440px);
-  min-height: 280px;
+  height: clamp(450px, 58vw, 690px);
+  min-height: 430px;
   overflow: hidden;
-  background: linear-gradient(135deg, #eaf2ff, #f8fbff);
+  isolation: isolate;
+  background: var(--vb-navy-dark);
 }
 
 .vb-about-slide {
   position: absolute;
   inset: 0;
+  z-index: 0;
   overflow: hidden;
-  visibility: hidden;
   opacity: 0;
-  transition:
-    opacity 0.85s ease,
-    visibility 0.85s ease;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
 .vb-about-slide.is-active {
   z-index: 1;
-  visibility: visible;
   opacity: 1;
+  visibility: visible;
 }
 
 .vb-about-slide-image {
@@ -117,227 +121,217 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  animation: vbSlideZoom 5.2s ease both;
+  transform: scale(1.02);
+  transition: transform 6s ease;
 }
 
-.vb-about-slide-placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 24px;
-  color: var(--vb-navy);
-  background:
-    radial-gradient(circle at 80% 20%, rgba(68, 124, 220, 0.13), transparent 32%),
-    linear-gradient(125deg, #e8f0ff, #ffffff 55%, #edf9f7);
-  text-align: center;
-}
-
-.vb-placeholder-symbol {
-  display: grid;
-  width: 58px;
-  height: 58px;
-  place-items: center;
-  color: var(--vb-blue);
-  background: #ffffff;
-  border: 1px dashed #b8cbed;
-  border-radius: 18px;
-  font-size: 30px;
-  box-shadow: 0 10px 30px rgba(23, 57, 103, 0.08);
-}
-
-.vb-about-slide-placeholder strong {
-  font-size: clamp(18px, 2vw, 24px);
-}
-
-.vb-about-slide-placeholder small {
-  color: var(--vb-muted);
-  font-size: 13px;
+.vb-about-slide.is-active .vb-about-slide-image {
+  transform: scale(1.08);
 }
 
 .vb-about-slide-shade {
   position: absolute;
   inset: 0;
   z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(10, 34, 68, 0.82) 0%,
-    rgba(10, 34, 68, 0.54) 43%,
-    rgba(10, 34, 68, 0.08) 100%
-  );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(9, 27, 53, 0.86) 0%,
+      rgba(14, 39, 72, 0.62) 45%,
+      rgba(14, 39, 72, 0.13) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(9, 27, 53, 0.55) 0%,
+      transparent 45%
+    );
 }
 
 .vb-about-slide-caption {
   position: absolute;
   z-index: 2;
   top: 50%;
-  left: max(32px, calc((100% - 1240px) / 2));
-  width: min(560px, 65%);
-  color: #ffffff;
+  left: max(6.5%, calc((100% - 1240px) / 2));
+  width: min(680px, 78%);
+  color: #fff;
   transform: translateY(-50%);
-  animation: vbFadeUp 0.8s ease both;
 }
 
 .vb-about-slide-caption > span {
-  display: block;
-  margin-bottom: 15px;
-  color: #8ff1dc;
-  font-size: 11px;
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #ffd0df;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 2.2px;
+  letter-spacing: 2.6px;
+  line-height: 1.8;
 }
 
 .vb-about-slide-caption h1 {
   margin: 0;
-  color: #ffffff;
-  font-size: clamp(29px, 4vw, 52px);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -1.2px;
+  color: #fff;
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 850;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  overflow-wrap: anywhere;
 }
 
-.vb-about-slide-caption p {
-  margin: 15px 0 0;
-  color: #e6efff;
-  font-size: 17px;
-  font-weight: 600;
+.vb-about-slide-caption > p {
+  margin: 20px 0 28px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(15px, 1.7vw, 19px);
+  line-height: 1.7;
+}
+
+.vb-about-slider-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 52px;
+  padding: 0 23px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 9px;
+  background: var(--vb-pink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 750;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.vb-about-slider-cta:hover {
+  background: #d9386d;
+  transform: translateY(-2px);
+}
+
+.vb-about-slider-cta span {
+  font-size: 19px;
 }
 
 .vb-about-slider-controls {
   position: absolute;
   z-index: 4;
-  right: 30px;
-  bottom: 24px;
-  left: 30px;
+  right: max(5%, calc((100% - 1240px) / 2));
+  bottom: 35px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 18px;
 }
 
 .vb-slider-arrow {
   display: grid;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
+  width: 44px;
+  height: 44px;
   place-items: center;
-  color: #ffffff;
-  background: rgba(15, 40, 76, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.65);
   border-radius: 50%;
-  cursor: pointer;
-  font-size: 27px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 29px;
   line-height: 1;
-  transition: background 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
+  transition: background 0.25s ease;
 }
 
 .vb-slider-arrow:hover {
   background: var(--vb-pink);
-  transform: scale(1.07);
 }
 
 .vb-about-dots {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 9px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .vb-about-dot {
   width: 9px;
   height: 9px;
   padding: 0;
-  background: rgba(255, 255, 255, 0.6);
   border: 0;
   border-radius: 20px;
+  background: rgba(255, 255, 255, 0.55);
   cursor: pointer;
   transition: width 0.3s ease, background 0.3s ease;
 }
 
 .vb-about-dot.is-active {
-  width: 27px;
-  background: #ffffff;
+  width: 28px;
+  background: var(--vb-pink);
 }
 
 /* =========================================
-   INTRODUCTION
-========================================= */
+   SCHOOL INTRODUCTION
+   ========================================= */
 
 .vb-about-intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.8fr);
   align-items: center;
-  gap: 65px;
+  gap: clamp(35px, 7vw, 100px);
+  padding-block: 100px;
+}
+
+.vb-about-intro-copy > .vb-about-eyebrow {
+  margin-bottom: 17px;
 }
 
 .vb-about-intro-copy h2 {
-  max-width: 700px;
+  max-width: 650px;
+  font-size: clamp(31px, 3.7vw, 44px);
 }
 
 .vb-about-intro-copy > p {
+  margin: 18px 0 0;
   color: var(--vb-muted);
-  font-size: 14px;
-  line-height: 2;
+  font-size: 15.5px;
+  line-height: 1.95;
 }
 
-.vb-about-intro-copy .vb-about-lead {
-  margin-top: 22px;
-  color: #355a8c;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.85;
+.vb-about-intro-copy > p.vb-about-lead {
+  color: var(--vb-navy);
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.7;
 }
 
-.vb-about-intro-actions,
-.vb-about-closing-actions {
+.vb-about-intro-actions {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
-  margin-top: 28px;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 30px;
 }
 
 .vb-about-btn {
   display: inline-flex;
-  min-height: 48px;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 13px 22px;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  font-size: 13px;
+  gap: 16px;
+  min-height: 51px;
+  padding: 0 22px;
+  border-radius: 9px;
+  font-size: 14px;
   font-weight: 750;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .vb-about-btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 .vb-about-btn-primary {
-  color: #ffffff;
   background: var(--vb-navy);
-  box-shadow: 0 10px 24px rgba(23, 57, 103, 0.15);
+  color: #fff;
+  box-shadow: 0 9px 24px rgba(24, 57, 102, 0.15);
 }
 
 .vb-about-btn-primary:hover {
-  background: var(--vb-blue);
-  box-shadow: 0 14px 28px rgba(23, 57, 103, 0.2);
+  box-shadow: 0 12px 28px rgba(24, 57, 102, 0.24);
 }
 
 .vb-about-text-link {
   color: var(--vb-navy);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 750;
 }
 
@@ -347,182 +341,187 @@
 
 .vb-about-motto-card {
   position: relative;
+  display: flex;
+  min-height: 325px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   overflow: hidden;
-  padding: 42px 35px;
-  background: linear-gradient(145deg, #173967, #2d63ba);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 26px;
-  box-shadow: 0 22px 50px rgba(23, 57, 103, 0.17);
-  color: #ffffff;
-}
-
-.vb-about-motto-card::after {
-  position: absolute;
-  right: -75px;
-  bottom: -100px;
-  width: 230px;
-  height: 230px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 50%;
-  content: "";
-  box-shadow: 0 0 0 25px rgba(255, 255, 255, 0.035),
-    0 0 0 55px rgba(255, 255, 255, 0.025);
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid #e5eaf4;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, #fce8ef 0, transparent 42%),
+    linear-gradient(145deg, #f6f9ff, #fff);
+  box-shadow: 0 22px 60px rgba(24, 57, 102, 0.08);
 }
 
 .vb-motto-decoration {
-  display: grid;
-  width: 50px;
-  height: 50px;
-  place-items: center;
-  margin-bottom: 26px;
-  color: #b17a06;
-  background: #ffedbd;
-  border-radius: 15px;
-  font-size: 25px;
+  position: absolute;
+  top: 10px;
+  right: 24px;
+  color: rgba(240, 79, 131, 0.13);
+  font-size: 130px;
+  line-height: 1;
 }
 
 .vb-about-motto-card > span {
-  color: #a7eddf;
+  color: var(--vb-pink);
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
+  font-weight: 850;
+  letter-spacing: 2.4px;
 }
 
 .vb-about-motto-card h3 {
   position: relative;
-  z-index: 1;
-  margin: 12px 0;
-  font-size: clamp(27px, 3vw, 36px);
+  margin: 20px 0 12px;
+  color: var(--vb-navy);
+  font-size: clamp(28px, 3vw, 36px);
   line-height: 1.2;
 }
 
-.vb-about-motto-card p {
-  position: relative;
-  z-index: 1;
-  color: #e1ebff;
-  font-size: 14px;
-  line-height: 1.9;
+.vb-about-motto-card > p {
+  margin: 0;
+  color: var(--vb-muted);
+  font-size: 15px;
+  line-height: 1.8;
 }
 
 .vb-motto-rule {
-  width: 55px;
-  height: 3px;
-  margin: 26px 0 17px;
-  background: #8ce5d7;
-  border-radius: 10px;
+  width: 65px;
+  height: 4px;
+  margin: 26px 0 18px;
+  border-radius: 5px;
+  background: var(--vb-pink);
 }
 
-.vb-about-motto-card small {
-  position: relative;
-  z-index: 1;
-  color: #dce8ff;
-  font-size: 11px;
-  letter-spacing: 1px;
+.vb-about-motto-card > small {
+  color: var(--vb-navy);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.5px;
 }
 
 /* =========================================
    VISION AND MISSION
-========================================= */
+   ========================================= */
 
 .vb-about-purpose {
-  padding: 85px 32px;
-  background:
-    radial-gradient(circle at 10% 15%, rgba(53, 107, 212, 0.07), transparent 30%),
-    linear-gradient(180deg, #f6f9ff, #ffffff);
-  border-top: 1px solid #edf2fa;
-  border-bottom: 1px solid #edf2fa;
+  padding: 95px 32px;
+  background: var(--vb-light);
 }
 
 .vb-about-purpose-inner {
-  width: min(100%, 1240px);
-  margin-inline: auto;
+  width: min(1120px, 100%);
+  margin: 0 auto;
 }
 
 .vb-purpose-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 25px;
 }
 
 .vb-purpose-card {
-  padding: 34px;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 4vw, 45px);
   border: 1px solid var(--vb-border);
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 12px 35px rgba(23, 57, 103, 0.045);
+  border-radius: 19px;
+  background: #fff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .vb-purpose-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 18px 40px rgba(23, 57, 103, 0.09);
+  box-shadow: 0 18px 45px rgba(24, 57, 102, 0.09);
+}
+
+.vb-purpose-card::after {
+  position: absolute;
+  right: -45px;
+  bottom: -65px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(240, 79, 131, 0.055);
+  content: "";
 }
 
 .vb-purpose-icon {
   display: grid;
-  width: 52px;
-  height: 52px;
+  width: 57px;
+  height: 57px;
+  margin-bottom: 25px;
   place-items: center;
-  margin-bottom: 24px;
-  color: var(--vb-blue);
+  border-radius: 15px;
   background: #edf3ff;
-  border-radius: 16px;
-  font-size: 25px;
+  color: var(--vb-navy);
+  font-size: 28px;
 }
 
 .vb-purpose-mission .vb-purpose-icon {
-  color: #0d9894;
-  background: #e8f9f5;
+  background: #fff0f5;
+  color: var(--vb-pink);
 }
 
 .vb-purpose-label {
-  color: var(--vb-teal);
+  color: var(--vb-pink);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 850;
   letter-spacing: 2px;
 }
 
 .vb-purpose-card h3 {
-  margin: 12px 0;
+  margin: 13px 0;
   color: var(--vb-navy);
-  font-size: 23px;
-  line-height: 1.4;
+  font-size: clamp(22px, 2.4vw, 29px);
+  line-height: 1.3;
 }
 
 .vb-purpose-card p {
+  position: relative;
+  z-index: 1;
   margin: 0;
   color: var(--vb-muted);
-  font-size: 14px;
-  line-height: 2;
+  font-size: 14.5px;
+  line-height: 1.95;
 }
 
 /* =========================================
-   LEADERSHIP MESSAGES
-========================================= */
+   LEADERSHIP MESSAGES AND PHOTOS
+   ========================================= */
 
-.vb-about-leadership > .vb-about-heading {
-  margin-bottom: 48px;
+.vb-about-leadership {
+  padding-block: 100px;
 }
 
 .vb-leadership-list {
-  display: grid;
-  gap: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
 }
 
 .vb-leader-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  min-height: 320px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+  align-items: stretch;
+  min-width: 0;
   overflow: hidden;
-  background: #ffffff;
   border: 1px solid var(--vb-border);
-  border-radius: 24px;
-  box-shadow: 0 12px 38px rgba(23, 57, 103, 0.055);
-  animation: vbFadeUp 0.65s ease both;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(24, 57, 102, 0.055);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.vb-leader-reverse {
-  grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.25fr);
+.vb-leader-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(24, 57, 102, 0.1);
+}
+
+.vb-leader-card.vb-leader-reverse {
+  grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1fr);
 }
 
 .vb-leader-reverse .vb-leader-message {
@@ -535,88 +534,80 @@
 
 .vb-leader-message {
   position: relative;
-  align-self: center;
-  padding: 38px 40px;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(30px, 5vw, 60px);
 }
 
 .vb-leader-quote-mark {
-  display: block;
-  height: 38px;
-  color: #d6e4ff;
+  position: absolute;
+  top: 9px;
+  left: 22px;
+  color: #fce2eb;
   font-family: Georgia, serif;
-  font-size: 70px;
+  font-size: 100px;
   line-height: 1;
+  pointer-events: none;
+}
+
+.vb-leader-message > *:not(.vb-leader-quote-mark) {
+  position: relative;
 }
 
 .vb-leader-message .vb-about-eyebrow {
-  margin-top: 8px;
-  margin-bottom: 7px;
-  font-size: 10px;
+  margin-bottom: 12px;
 }
 
 .vb-leader-message h3 {
-  margin: 0 0 17px;
+  margin: 0 0 18px;
   color: var(--vb-navy);
-  font-size: 23px;
-  line-height: 1.4;
+  font-size: clamp(23px, 2.7vw, 32px);
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .vb-leader-message > p {
   margin: 0;
   color: var(--vb-muted);
-  font-size: 13px;
-  line-height: 2;
+  font-size: 15px;
+  line-height: 1.95;
 }
 
 .vb-leader-signature {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 25px;
 }
 
-.vb-leader-signature span {
-  width: 38px;
+.vb-leader-signature > span {
+  width: 48px;
   height: 3px;
-  background: var(--vb-pink);
   border-radius: 5px;
+  background: var(--vb-pink);
 }
 
 .vb-leader-signature small {
   color: var(--vb-navy);
-  font-size: 11px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .vb-leader-photo-wrap {
   position: relative;
-  min-height: 320px;
+  min-width: 0;
+  min-height: 370px;
   overflow: hidden;
-  background: linear-gradient(145deg, #e8f0ff, #f8fbff 55%, #e9f8f5);
-}
-
-.vb-leader-photo-wrap::before,
-.vb-leader-photo-wrap::after {
-  position: absolute;
-  z-index: 1;
-  width: 150px;
-  height: 150px;
-  border: 1px solid rgba(53, 107, 212, 0.13);
-  border-radius: 50%;
-  content: "";
-  pointer-events: none;
-}
-
-.vb-leader-photo-wrap::before {
-  top: -65px;
-  right: -30px;
-}
-
-.vb-leader-photo-wrap::after {
-  bottom: -85px;
-  left: -30px;
-  width: 190px;
-  height: 190px;
+  background:
+    radial-gradient(circle at 70% 20%, #fce4ed, transparent 42%),
+    linear-gradient(145deg, #eaf0fa, #dbe5f3);
 }
 
 .vb-leader-photo {
@@ -625,508 +616,504 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 28%;
+  transition: transform 0.55s ease;
 }
 
-.vb-leader-photo-placeholder {
+.vb-leader-card:hover .vb-leader-photo {
+  transform: scale(1.035);
+}
+
+.vb-leader-photo-label {
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 25px;
-  text-align: center;
+  gap: 5px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  background: rgba(17, 42, 76, 0.83);
+  color: #fff;
+  backdrop-filter: blur(10px);
 }
 
-.vb-photo-placeholder-icon {
-  display: grid;
-  width: 62px;
-  height: 62px;
-  place-items: center;
-  color: var(--vb-blue);
-  background: #ffffff;
-  border: 1px dashed #b8cbed;
-  border-radius: 20px;
-  font-size: 30px;
-  box-shadow: 0 10px 28px rgba(23, 57, 103, 0.08);
+.vb-leader-photo-label > span {
+  color: #ffd0df;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
 }
 
-.vb-leader-photo-placeholder strong {
-  color: var(--vb-navy);
-  font-size: 14px;
-}
-
-.vb-leader-photo-placeholder span {
-  color: #355a8c;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.vb-leader-photo-placeholder small {
-  color: var(--vb-muted);
-  font-size: 11px;
+.vb-leader-photo-label strong {
+  font-size: 15px;
+  font-weight: 750;
 }
 
 /* =========================================
    WHY CHOOSE VPS
-========================================= */
+   ========================================= */
 
 .vb-about-why {
-  padding: 90px 32px;
-  background: linear-gradient(180deg, #f6f9ff 0%, #ffffff 100%);
-  border-top: 1px solid #edf2fa;
+  padding: 95px 32px;
+  background:
+    radial-gradient(circle at 0% 100%, #eaf0ff 0, transparent 34%),
+    #f8faff;
 }
 
 .vb-about-why-inner {
-  width: min(100%, 1240px);
-  margin-inline: auto;
+  width: min(1180px, 100%);
+  margin: 0 auto;
 }
 
 .vb-why-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: 20px;
 }
 
 .vb-why-card {
   position: relative;
-  overflow: hidden;
-  min-height: 235px;
-  padding: 28px 25px;
-  background: linear-gradient(145deg, #f1f5ff, #ffffff);
-  border: 1px solid #e3ebfa;
-  border-radius: 22px;
-  box-shadow: 0 10px 30px rgba(21, 53, 99, 0.045);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-  animation: vbFadeUp 0.65s ease both;
-}
-
-.vb-why-card:nth-child(2) {
-  animation-delay: 0.08s;
-  background: linear-gradient(145deg, #fff7ed, #ffffff);
-}
-
-.vb-why-card:nth-child(3) {
-  animation-delay: 0.16s;
-  background: linear-gradient(145deg, #ecfaf7, #ffffff);
-}
-
-.vb-why-card:nth-child(4) {
-  animation-delay: 0.12s;
-  background: linear-gradient(145deg, #f7f0ff, #ffffff);
-}
-
-.vb-why-card:nth-child(5) {
-  animation-delay: 0.2s;
-  background: linear-gradient(145deg, #fff1f0, #ffffff);
-}
-
-.vb-why-card:nth-child(6) {
-  animation-delay: 0.24s;
-  background: linear-gradient(145deg, #edf3ff, #ffffff);
+  min-width: 0;
+  padding: 30px 27px;
+  border: 1px solid var(--vb-border);
+  border-radius: 17px;
+  background: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .vb-why-card:hover {
-  transform: translateY(-7px);
-  border-color: #c8d9f5;
-  box-shadow: 0 20px 45px rgba(21, 53, 99, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 17px 38px rgba(24, 57, 102, 0.09);
 }
 
 .vb-why-number {
   position: absolute;
-  top: 25px;
-  right: 25px;
-  color: #a6b5cc;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 1px;
+  top: 21px;
+  right: 22px;
+  color: #dfe6f1;
+  font-size: 28px;
+  font-weight: 850;
 }
 
 .vb-why-icon {
   display: grid;
   width: 52px;
   height: 52px;
+  margin-bottom: 23px;
   place-items: center;
-  margin-bottom: 22px;
-  color: var(--vb-blue);
-  background: #ffffff;
-  border: 1px solid #e7edfa;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(46, 98, 199, 0.08);
+  border-radius: 14px;
+  background: #edf3ff;
+  color: var(--vb-navy);
   font-size: 25px;
-  transition: transform 0.3s ease;
 }
 
-.vb-why-card:hover .vb-why-icon {
-  transform: rotate(-6deg) scale(1.06);
-}
-
-.vb-why-card:nth-child(2) .vb-why-icon {
-  color: #d17d13;
-}
-
-.vb-why-card:nth-child(3) .vb-why-icon {
-  color: #0c9c9a;
-}
-
-.vb-why-card:nth-child(4) .vb-why-icon {
-  color: #8c56d6;
-}
-
+.vb-why-card:nth-child(2) .vb-why-icon,
 .vb-why-card:nth-child(5) .vb-why-icon {
-  color: #e5655c;
+  background: #fff0f5;
+  color: var(--vb-pink);
+}
+
+.vb-why-card:nth-child(3) .vb-why-icon,
+.vb-why-card:nth-child(6) .vb-why-icon {
+  background: #eaf8f1;
+  color: #23845b;
 }
 
 .vb-why-card h3 {
-  margin: 0 0 11px;
+  margin: 0 0 12px;
   color: var(--vb-navy);
-  font-size: 17px;
-  line-height: 1.5;
+  font-size: 19px;
+  line-height: 1.4;
 }
 
 .vb-why-card p {
   margin: 0;
   color: var(--vb-muted);
-  font-size: 13px;
-  line-height: 1.9;
+  font-size: 14px;
+  line-height: 1.85;
 }
 
 .vb-why-bottom {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
-  max-width: 760px;
-  margin: 42px auto 0;
+  gap: 19px;
+  margin-top: 30px;
   padding: 25px 30px;
-  background: #f2f7ff;
-  border: 1px solid #e2ebfa;
-  border-radius: 18px;
+  border: 1px solid #e4eaf4;
+  border-radius: 15px;
+  background: #fff;
 }
 
 .vb-why-bottom-icon {
   display: grid;
-  flex: 0 0 48px;
-  height: 48px;
+  width: 49px;
+  height: 49px;
+  flex: 0 0 49px;
   place-items: center;
-  color: #a97600;
-  background: #ffedbf;
-  border-radius: 15px;
+  border-radius: 14px;
+  background: #fff0f5;
+  color: var(--vb-pink);
   font-size: 25px;
 }
 
 .vb-why-bottom strong {
   display: block;
   color: var(--vb-navy);
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .vb-why-bottom p {
   margin: 6px 0 0;
   color: var(--vb-muted);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
 }
 
 /* =========================================
    CLOSING BANNER
-========================================= */
+   ========================================= */
 
 .vb-about-closing {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: 78px 32px;
-  background: linear-gradient(120deg, #142f56, #2455a1);
+  padding: 90px 32px;
+  background: linear-gradient(120deg, #10294c, #1d477b);
 }
 
 .vb-about-closing-content {
   position: relative;
   z-index: 2;
-  width: min(100%, 900px);
-  margin-inline: auto;
-  color: #ffffff;
+  width: min(820px, 100%);
+  margin: 0 auto;
   text-align: center;
 }
 
 .vb-about-closing-content > span {
-  color: #8ff1dc;
+  color: #ffc7d9;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
+  font-weight: 850;
+  letter-spacing: 2.5px;
 }
 
 .vb-about-closing-content h2 {
-  margin: 16px 0;
-  color: #ffffff;
-  font-size: clamp(30px, 4vw, 47px);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -1px;
+  margin: 18px 0;
+  color: #fff;
+  font-size: clamp(32px, 5vw, 53px);
+  font-weight: 850;
+  line-height: 1.15;
+  letter-spacing: -1.3px;
 }
 
 .vb-about-closing-content > p {
-  max-width: 680px;
+  max-width: 620px;
   margin: 0 auto;
-  color: #e0eaff;
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px;
   line-height: 1.9;
 }
 
 .vb-about-closing-actions {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 23px;
+  margin-top: 30px;
 }
 
 .vb-about-btn-light {
+  background: #fff;
   color: var(--vb-navy);
-  background: #ffffff;
 }
 
 .vb-about-btn-light:hover {
-  background: #e8f0ff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
 }
 
 .vb-about-closing-link {
-  color: #ffffff;
-  font-size: 13px;
+  color: #fff;
+  font-size: 14px;
   font-weight: 750;
 }
 
 .vb-about-closing-link:hover {
-  color: #8ff1dc;
+  color: #ffc7d9;
 }
 
 .vb-closing-orb {
   position: absolute;
   z-index: 0;
-  width: 260px;
-  height: 260px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   pointer-events: none;
 }
 
 .vb-closing-orb-one {
-  top: -140px;
-  left: -70px;
-  box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.025);
+  top: -185px;
+  left: -80px;
+  box-shadow:
+    0 0 0 35px rgba(255, 255, 255, 0.025),
+    0 0 0 70px rgba(255, 255, 255, 0.02);
 }
 
 .vb-closing-orb-two {
-  right: -80px;
-  bottom: -180px;
-  width: 340px;
-  height: 340px;
-  box-shadow: 0 0 0 35px rgba(255, 255, 255, 0.025);
+  right: -130px;
+  bottom: -220px;
+  width: 400px;
+  height: 400px;
+  box-shadow:
+    0 0 0 35px rgba(255, 255, 255, 0.025),
+    0 0 0 70px rgba(255, 255, 255, 0.02);
 }
 
 /* =========================================
-   ANIMATIONS
-========================================= */
-
-@keyframes vbFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes vbSlideZoom {
-  from {
-    transform: scale(1.04);
-  }
-
-  to {
-    transform: scale(1);
-  }
-}
-
-/* Respect reduced-motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .vb-about-page *,
-  .vb-about-page *::before,
-  .vb-about-page *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* =========================================
-   TABLET RESPONSIVE
-========================================= */
+   TABLET RESPONSIVENESS
+   ========================================= */
 
 @media (max-width: 1000px) {
+  .vb-about-section {
+    width: calc(100% - 48px);
+  }
+
   .vb-about-intro {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
     gap: 35px;
+    padding-block: 75px;
+  }
+
+  .vb-about-motto-card {
+    min-height: 290px;
+  }
+
+  .vb-leader-card,
+  .vb-leader-card.vb-leader-reverse {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
+  }
+
+  .vb-leader-message {
+    padding: 32px;
+  }
+
+  .vb-leader-photo-wrap {
+    min-height: 350px;
   }
 
   .vb-why-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .vb-leader-card {
-    grid-template-columns: minmax(0, 1.1fr) minmax(250px, 0.9fr);
-  }
-
-  .vb-leader-reverse {
-    grid-template-columns: minmax(250px, 0.9fr) minmax(0, 1.1fr);
-  }
-
-  .vb-leader-message {
-    padding: 30px;
-  }
 }
 
 /* =========================================
-   MOBILE RESPONSIVE
-========================================= */
+   MOBILE RESPONSIVENESS
+   ========================================= */
 
 @media (max-width: 700px) {
   .vb-about-section {
     width: calc(100% - 36px);
-    padding-block: 58px;
-  }
-
-  .vb-about-heading {
-    margin-bottom: 30px;
-  }
-
-  .vb-about-heading h2,
-  .vb-about-intro-copy h2 {
-    font-size: clamp(27px, 7vw, 35px);
-    letter-spacing: -0.7px;
-  }
-
-  .vb-about-heading > p {
-    font-size: 13px;
   }
 
   .vb-about-slider {
-    height: 300px;
-    min-height: 300px;
+    height: 570px;
+    min-height: 480px;
+    max-height: 82svh;
+  }
+
+  .vb-about-slide-image {
+    object-position: center;
+  }
+
+  .vb-about-slide-shade {
+    background:
+      linear-gradient(
+        0deg,
+        rgba(8, 26, 50, 0.88) 0%,
+        rgba(8, 26, 50, 0.42) 60%,
+        rgba(8, 26, 50, 0.15) 100%
+      );
   }
 
   .vb-about-slide-caption {
-    right: 20px;
+    top: auto;
+    bottom: 105px;
     left: 22px;
-    width: auto;
+    width: calc(100% - 44px);
+    transform: none;
   }
 
   .vb-about-slide-caption > span {
-    font-size: 9px;
-    letter-spacing: 1.4px;
+    margin-bottom: 13px;
+    font-size: 10px;
+    letter-spacing: 1.7px;
   }
 
   .vb-about-slide-caption h1 {
-    font-size: clamp(27px, 8vw, 38px);
+    font-size: clamp(34px, 9vw, 49px);
+    letter-spacing: -1.2px;
   }
 
-  .vb-about-slide-caption p {
+  .vb-about-slide-caption > p {
+    margin: 14px 0 20px;
     font-size: 14px;
   }
 
+  .vb-about-slider-cta {
+    min-height: 46px;
+    padding-inline: 17px;
+    font-size: 13px;
+  }
+
   .vb-about-slider-controls {
-    right: 14px;
-    bottom: 14px;
-    left: 14px;
-    gap: 10px;
+    right: 20px;
+    bottom: 22px;
+    left: 20px;
+    justify-content: space-between;
+    gap: 12px;
   }
 
   .vb-slider-arrow {
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-    font-size: 23px;
+    width: 39px;
+    height: 39px;
+    flex: 0 0 39px;
+    font-size: 26px;
   }
 
   .vb-about-dots {
-    gap: 7px;
+    flex: 1;
+    justify-content: center;
   }
 
   .vb-about-intro {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 30px;
+    padding-block: 65px;
+  }
+
+  .vb-about-heading {
+    margin-bottom: 32px;
+  }
+
+  .vb-about-heading h2,
+  .vb-about-intro-copy h2 {
+    font-size: clamp(29px, 7.5vw, 37px);
+    letter-spacing: -0.8px;
+  }
+
+  .vb-about-heading > p {
+    margin-top: 13px;
+    font-size: 14px;
+    line-height: 1.8;
   }
 
   .vb-about-intro-copy > p {
+    font-size: 14px;
+    line-height: 1.85;
+  }
+
+  .vb-about-intro-copy > p.vb-about-lead {
+    font-size: 16px;
+  }
+
+  .vb-about-intro-actions {
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .vb-about-btn {
+    min-height: 47px;
+    padding-inline: 17px;
     font-size: 13px;
   }
 
-  .vb-about-intro-copy .vb-about-lead {
-    font-size: 15px;
+  .vb-about-text-link {
+    padding-block: 14px;
+    font-size: 13px;
   }
 
   .vb-about-motto-card {
-    padding: 32px 27px;
-    border-radius: 21px;
+    min-height: 265px;
+    padding: 30px;
+    border-radius: 19px;
   }
 
-  .vb-about-purpose {
-    padding: 58px 18px;
+  .vb-about-purpose,
+  .vb-about-why {
+    padding: 65px 18px;
   }
 
   .vb-purpose-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 17px;
   }
 
   .vb-purpose-card {
-    padding: 27px 23px;
-    border-radius: 19px;
+    padding: 27px;
+    border-radius: 16px;
   }
 
   .vb-purpose-card h3 {
-    font-size: 20px;
+    font-size: 23px;
   }
 
   .vb-purpose-card p {
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.85;
+  }
+
+  .vb-about-leadership {
+    padding-block: 65px;
   }
 
   .vb-leadership-list {
-    gap: 20px;
+    gap: 24px;
   }
 
   .vb-leader-card,
-  .vb-leader-reverse {
+  .vb-leader-card.vb-leader-reverse {
     grid-template-columns: 1fr;
+    border-radius: 18px;
   }
 
   .vb-leader-message,
   .vb-leader-reverse .vb-leader-message {
     order: 2;
-    padding: 27px 23px;
+    padding: 29px 24px 31px;
   }
 
   .vb-leader-photo-wrap,
   .vb-leader-reverse .vb-leader-photo-wrap {
     order: 1;
-    min-height: 230px;
+    min-height: 0;
+    height: clamp(280px, 80vw, 410px);
+  }
+
+  .vb-leader-photo {
+    object-position: center 25%;
   }
 
   .vb-leader-message h3 {
-    font-size: 21px;
+    font-size: 25px;
   }
 
   .vb-leader-message > p {
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.85;
   }
 
-  .vb-about-why {
-    padding: 60px 18px;
+  .vb-leader-quote-mark {
+    top: 2px;
+    left: 14px;
+    font-size: 78px;
+  }
+
+  .vb-leader-message .vb-about-eyebrow {
+    font-size: 10px;
+    letter-spacing: 1.5px;
   }
 
   .vb-why-grid {
@@ -1135,80 +1122,140 @@
   }
 
   .vb-why-card {
-    min-height: 0;
-    padding: 25px 22px;
-    border-radius: 18px;
-  }
-
-  .vb-why-icon {
-    margin-bottom: 18px;
+    padding: 26px 23px;
   }
 
   .vb-why-card h3 {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   .vb-why-bottom {
     align-items: flex-start;
     gap: 13px;
-    margin-top: 27px;
-    padding: 19px 16px;
-  }
-
-  .vb-why-bottom-icon {
-    flex-basis: 40px;
-    height: 40px;
+    padding: 21px 18px;
   }
 
   .vb-why-bottom strong {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .vb-why-bottom p {
-    font-size: 12px;
-  }
-
-  .vb-about-closing {
-    padding: 58px 20px;
-  }
-
-  .vb-about-closing-content h2 {
-    font-size: 31px;
-  }
-
-  .vb-about-closing-content > p {
     font-size: 13px;
   }
 
+  .vb-about-closing {
+    padding: 68px 22px;
+  }
+
+  .vb-about-closing-content h2 {
+    font-size: clamp(31px, 8vw, 42px);
+    letter-spacing: -0.8px;
+  }
+
+  .vb-about-closing-content > p {
+    font-size: 14px;
+  }
+
   .vb-about-closing-actions {
-    gap: 16px;
+    gap: 18px;
   }
 }
 
-/* Small phones */
+/* SMALL PHONES */
+
 @media (max-width: 380px) {
   .vb-about-section {
     width: calc(100% - 28px);
   }
 
   .vb-about-slider {
-    height: 270px;
-    min-height: 270px;
+    height: 520px;
+  }
+
+  .vb-about-slide-caption {
+    left: 17px;
+    width: calc(100% - 34px);
+  }
+
+  .vb-about-slide-caption h1 {
+    font-size: 32px;
+  }
+
+  .vb-about-slide-caption > span {
+    font-size: 9px;
   }
 
   .vb-about-intro-actions {
-    align-items: flex-start;
     flex-direction: column;
-    gap: 16px;
+    align-items: flex-start;
+    gap: 10px;
   }
 
+  .vb-leader-message {
+    padding-inline: 20px;
+  }
+
+  .vb-about-purpose,
+  .vb-about-why {
+    padding-inline: 14px;
+  }
+
+  .vb-about-closing-actions {
+    flex-direction: column;
+  }
+}
+
+/* ACCESSIBILITY: REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-about-page *,
+  .vb-about-page *::before,
+  .vb-about-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ===== LEADERSHIP PHOTO CROP FIX ===== */
+
+/* Director / Principal */
+.vb-leader-card:nth-child(2) .vb-leader-photo {
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+/* School Management Coordinator */
+.vb-leader-card:nth-child(3) .vb-leader-photo {
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+/* Chairman */
+.vb-leader-card:first-child .vb-leader-photo {
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+/* Keep the full photo area consistent */
+.vb-leader-photo-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+}
+
+.vb-leader-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile adjustment */
+@media (max-width: 650px) {
   .vb-leader-photo-wrap {
-    min-height: 200px;
-  }
-
-  .vb-about-btn {
-    min-height: 45px;
-    padding: 12px 17px;
+    height: 340px;
+    min-height: 0;
   }
 }

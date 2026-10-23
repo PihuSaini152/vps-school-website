@@ -4,31 +4,42 @@ import { Link } from "react-router-dom";
 import "./About.css";
 
 const schoolSlides = [
-  { title: "Our School Campus", image: "" },
-  { title: "Learning and Growing Together", image: "" },
-  { title: "A Journey of Excellence", image: "" },
-  { title: "Building a Brighter Tomorrow", image: "" },
+  {
+    title: "Our School Community",
+    subtitle: "Growing Together, Achieving Together",
+    image: "/About/school-group.jpg",
+  },
+  {
+    title: "Learning Beyond Classrooms",
+    subtitle: "Every Experience Builds Confidence",
+    image: "/About/school-program.jpg",
+  },
+  {
+    title: "A Campus Full of Possibilities",
+    subtitle: "Inspiring Young Minds Every Day",
+    image: "/About/school-building.jpg",
+  },
 ];
 
 const leadership = [
   {
     role: "Chairman",
     name: "Dr. Balwant Singh Chirana",
-    image: "",
+    image: "/About/Chairmen.jpg",
     message:
       "Our vision is to provide students with quality education and an environment that encourages them to become responsible, confident and thoughtful individuals. Together, we can help shape a better tomorrow.",
   },
   {
-    role: "Director / Principal",
+    role: "Director ",
     name: "Mrs. Dheeraj Kanwar",
-    image: "",
+    image: "/About/Diractor.jpg",
     message:
       "We want every school day to be a meaningful and enjoyable experience for children. Learning should inspire curiosity, reduce unnecessary stress and help each student discover their abilities. We look forward to working with parents to support every child's growth.",
   },
   {
     role: "School Management Coordinator",
     name: "Avya Singh Chirana",
-    image: "",
+    image: "/About/Manger.jpg",
     message:
       "A strong school community grows through cooperation, encouragement and a shared commitment to students. Our aim is to support a positive learning environment where children can develop knowledge, confidence and good values.",
   },
@@ -91,14 +102,24 @@ export default function About() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveSlide((current) => (current + 1) % schoolSlides.length);
-    }, 4500);
+    }, 5000);
 
     return () => window.clearInterval(timer);
   }, []);
 
+  const showPrevious = () => {
+    setActiveSlide(
+      (current) => (current - 1 + schoolSlides.length) % schoolSlides.length
+    );
+  };
+
+  const showNext = () => {
+    setActiveSlide((current) => (current + 1) % schoolSlides.length);
+  };
+
   return (
-    <div className="vb-about-page">
-      {/* AUTOMATIC SCHOOL IMAGE SLIDER */}
+    <main className="vb-about-page">
+      {/* TOP AUTOMATIC IMAGE SLIDER */}
       <section className="vb-about-slider" aria-label="School image gallery">
         {schoolSlides.map((slide, index) => (
           <div
@@ -108,27 +129,25 @@ export default function About() {
             }`}
             aria-hidden={activeSlide !== index}
           >
-            {slide.image ? (
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="vb-about-slide-image"
-              />
-            ) : (
-              <div className="vb-about-slide-placeholder">
-                <span className="vb-placeholder-symbol">＋</span>
-                <strong>{slide.title}</strong>
-                <small>
-                  Add your school image here
-                </small>
-              </div>
-            )}
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="vb-about-slide-image"
+              fetchPriority={index === 0 ? "high" : "auto"}
+              onError={(event) => {
+                event.currentTarget.style.visibility = "hidden";
+              }}
+            />
 
             <div className="vb-about-slide-shade" />
+
             <div className="vb-about-slide-caption">
               <span>VIDYA BHARATI PUBLIC SCHOOL</span>
               <h1>{slide.title}</h1>
-              <p>Education for Life</p>
+              <p>{slide.subtitle}</p>
+              <Link to="/admissions" className="vb-about-slider-cta">
+                Explore Admissions <span>↗</span>
+              </Link>
             </div>
           </div>
         ))}
@@ -137,13 +156,8 @@ export default function About() {
           <button
             type="button"
             className="vb-slider-arrow"
+            onClick={showPrevious}
             aria-label="Previous image"
-            onClick={() =>
-              setActiveSlide(
-                (current) =>
-                  (current - 1 + schoolSlides.length) % schoolSlides.length
-              )
-            }
           >
             ‹
           </button>
@@ -166,10 +180,8 @@ export default function About() {
           <button
             type="button"
             className="vb-slider-arrow"
+            onClick={showNext}
             aria-label="Next image"
-            onClick={() =>
-              setActiveSlide((current) => (current + 1) % schoolSlides.length)
-            }
           >
             ›
           </button>
@@ -183,16 +195,19 @@ export default function About() {
           <h2>
             Welcome to <span>Vidya Bharati Public School</span>
           </h2>
+
           <p className="vb-about-lead">
             Education for Life — nurturing knowledge, values and the potential
             of every learner.
           </p>
+
           <p>
             At Vidya Bharati Public School, our aim is to create a positive
             learning environment where students can develop their abilities,
             strengthen their character and prepare for the opportunities and
             responsibilities of tomorrow.
           </p>
+
           <p>
             We believe that education goes beyond textbooks. It should inspire
             curiosity, encourage independent thinking and help children grow
@@ -213,9 +228,7 @@ export default function About() {
           <div className="vb-motto-decoration">✦</div>
           <span>OUR MOTTO</span>
           <h3>Education for Life</h3>
-          <p>
-            Ultimately, the union of the soul with the Almighty.
-          </p>
+          <p>Ultimately, the union of the soul with the Almighty.</p>
           <div className="vb-motto-rule" />
           <small>Knowledge · Values · Growth</small>
         </div>
@@ -258,7 +271,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* LEADERSHIP MESSAGES */}
+      {/* LEADERSHIP MESSAGES WITH PHOTOS */}
       <section className="vb-about-leadership vb-about-section">
         <SectionHeading
           eyebrow="LEADERSHIP AND GUIDANCE"
@@ -276,7 +289,9 @@ export default function About() {
               }`}
             >
               <div className="vb-leader-message">
-                <span className="vb-leader-quote-mark">“</span>
+                <span className="vb-leader-quote-mark" aria-hidden="true">
+                  “
+                </span>
                 <span className="vb-about-eyebrow">{person.role}</span>
                 <h3>{person.name}</h3>
                 <p>{person.message}</p>
@@ -287,28 +302,26 @@ export default function About() {
               </div>
 
               <div className="vb-leader-photo-wrap">
-                {person.image ? (
-                  <img
-                    src={person.image}
-                    alt={person.name}
-                    className="vb-leader-photo"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="vb-leader-photo-placeholder">
-                    <div className="vb-photo-placeholder-icon">＋</div>
-                    <strong>{person.name}</strong>
-                    <span>{person.role} Photo</span>
-                    <small>Photo will be added here</small>
-                  </div>
-                )}
+                <img
+                  src={person.image}
+                  alt={`${person.name} - ${person.role}`}
+                  className="vb-leader-photo"
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.style.visibility = "hidden";
+                  }}
+                />
+                <div className="vb-leader-photo-label">
+                  <span>VIDYA BHARATI PUBLIC SCHOOL</span>
+                  <strong>{person.role}</strong>
+                </div>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* WHY CHOOSE VPS — REPLACES THE FACILITIES SECTION */}
+      {/* WHY CHOOSE VPS */}
       <section className="vb-about-why">
         <div className="vb-about-why-inner">
           <SectionHeading
@@ -351,6 +364,7 @@ export default function About() {
             Education for Life — empowering young minds through knowledge,
             values and continuous growth.
           </p>
+
           <div className="vb-about-closing-actions">
             <Link to="/admissions" className="vb-about-btn vb-about-btn-light">
               Explore Admissions ↗
@@ -360,9 +374,10 @@ export default function About() {
             </Link>
           </div>
         </div>
+
         <div className="vb-closing-orb vb-closing-orb-one" />
         <div className="vb-closing-orb vb-closing-orb-two" />
       </section>
-    </div>
+    </main>
   );
 }

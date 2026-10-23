@@ -1,7 +1,14 @@
 
+/* =========================================
+   VPS SCHOOL HOME PAGE
+   Responsive styles for all sections
+========================================= */
+
 .vb-home {
   width: 100%;
   overflow: hidden;
+  background: #fff;
+  color: #193b6b;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -15,6 +22,34 @@
   text-decoration: none;
 }
 
+.vb-home img {
+  max-width: 100%;
+}
+
+.vb-section {
+  position: relative;
+  padding: 88px 0;
+}
+
+.vb-section-container {
+  width: min(1240px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.vb-section-kicker {
+  display: inline-block;
+  color: #ed477b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
 .vb-hero {
   position: relative;
   isolation: isolate;
@@ -26,19 +61,17 @@
   background: #10294b;
 }
 
-/* Both school buildings in one image */
 .vb-hero-image {
   position: absolute;
   inset: 0;
   z-index: -3;
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
-  object-fit: fill;
+  object-fit: cover;
   object-position: center;
 }
 
-/* Text remains readable while the right building stays visible */
 .vb-hero-overlay {
   position: absolute;
   inset: 0;
@@ -53,6 +86,8 @@
 }
 
 .vb-hero-container {
+  position: relative;
+  z-index: 1;
   width: min(1240px, calc(100% - 64px));
   margin: 0 auto;
   padding: 65px 0;
@@ -60,7 +95,7 @@
 
 .vb-hero-content {
   width: min(650px, 59%);
-  color: #ffffff;
+  color: #fff;
   animation: vb-enter 0.8s ease-out both;
 }
 
@@ -75,7 +110,7 @@
 
 .vb-hero-content h1 {
   margin: 0;
-  color: #ffffff;
+  color: #fff;
   font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(40px, 4.5vw, 64px);
   font-weight: 900;
@@ -134,17 +169,17 @@
   align-items: flex-start;
   gap: 9px;
   margin: 15px 0 0;
-  color: #ffffff;
+  color: #fff;
   font-size: 13px;
   line-height: 1.7;
 }
 
 .vb-board-dot {
+  flex-shrink: 0;
   color: #69e0d1;
   font-size: 17px;
 }
 
-/* Admission and Contact buttons */
 .vb-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -180,25 +215,25 @@
 
 .vb-btn-admission {
   background: #ed0751;
-  color: #ffffff;
+  color: #fff;
   box-shadow: 0 8px 22px rgba(237, 7, 81, 0.25);
 }
 
 .vb-btn-admission:hover {
   background: #c50042;
-  color: #ffffff;
+  color: #fff;
   box-shadow: 0 12px 25px rgba(237, 7, 81, 0.32);
 }
 
 .vb-btn-contact {
   border-color: rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  color: #fff;
   backdrop-filter: blur(5px);
 }
 
 .vb-btn-contact:hover {
-  background: #ffffff;
+  background: #fff;
   color: #173c72;
 }
 
@@ -214,11 +249,12 @@
 }
 
 .vb-tagline span {
-  color: #6de1d2;
+  color: #6de1d1;
 }
 
 .vb-color-strip {
   position: absolute;
+  right: 0;
   bottom: 0;
   left: 0;
   display: flex;
@@ -241,6 +277,695 @@
   background: #f4c844;
 }
 
+/* =========================================
+   INTRODUCTION
+========================================= */
+
+.vb-intro {
+  background:
+    radial-gradient(ellipse at 100% 0%, #fff0f5 0, transparent 35%),
+    #fff;
+}
+
+.vb-intro-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 70px;
+}
+
+.vb-intro-copy h2 {
+  margin: 17px 0 22px;
+  color: #173b70;
+  font-size: clamp(30px, 3.5vw, 45px);
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.vb-intro-copy h2 span {
+  color: #ed477b;
+}
+
+.vb-intro-copy p {
+  margin: 0 0 16px;
+  color: #7183a0;
+  font-size: 15px;
+  line-height: 1.95;
+}
+
+.vb-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 12px;
+  color: #173b70;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.vb-text-link span {
+  color: #ed477b;
+  font-size: 19px;
+  transition: transform 0.2s ease;
+}
+
+.vb-text-link:hover span {
+  transform: translate(3px, -3px);
+}
+
+.vb-motto-card {
+  position: relative;
+  min-height: 330px;
+  padding: 42px;
+  overflow: hidden;
+  border: 1px solid #e0e8f6;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #f5f8ff, #fff 70%);
+  box-shadow: 0 20px 55px rgba(23, 59, 112, 0.06);
+}
+
+.vb-motto-decoration {
+  position: absolute;
+  top: 15px;
+  right: 28px;
+  color: #fbd9e5;
+  font-size: 100px;
+  line-height: 1;
+}
+
+.vb-motto-card h3 {
+  position: relative;
+  margin: 25px 0 12px;
+  color: #173b70;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.vb-motto-card p {
+  position: relative;
+  max-width: 330px;
+  margin: 0;
+  color: #7183a0;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.vb-motto-line {
+  width: 78px;
+  height: 4px;
+  margin: 28px 0 20px;
+  border-radius: 5px;
+  background: #ed477b;
+}
+
+.vb-motto-card strong {
+  position: relative;
+  color: #173b70;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   SECTION HEADINGS
+========================================= */
+
+.vb-section-heading {
+  max-width: 720px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.vb-section-heading h2 {
+  margin: 13px 0;
+  color: #173b70;
+  font-size: clamp(30px, 3.5vw, 43px);
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.vb-section-heading h2 span {
+  color: #ed477b;
+}
+
+.vb-section-heading > p {
+  max-width: 650px;
+  margin: 0 auto;
+  color: #7183a0;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   HIGHLIGHTS
+========================================= */
+
+.vb-highlights {
+  background: #f5f8fd;
+}
+
+.vb-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 23px;
+}
+
+.vb-highlight-card {
+  position: relative;
+  min-height: 230px;
+  padding: 32px;
+  overflow: hidden;
+  border: 1px solid #e1e8f4;
+  border-radius: 20px;
+  background: #fff;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.vb-highlight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(23, 59, 112, 0.09);
+}
+
+.vb-highlight-number {
+  position: absolute;
+  top: 20px;
+  right: 23px;
+  color: #e8edf7;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.vb-highlight-icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border-radius: 16px;
+  background: #fff0f5;
+  color: #ed477b;
+  font-size: 25px;
+}
+
+.vb-highlight-card:nth-child(2) .vb-highlight-icon {
+  background: #e7faf5;
+  color: #109c8c;
+}
+
+.vb-highlight-card:nth-child(3) .vb-highlight-icon {
+  background: #fff7df;
+  color: #ba8a19;
+}
+
+.vb-highlight-card h3 {
+  margin: 22px 0 10px;
+  color: #173b70;
+  font-size: 19px;
+}
+
+.vb-highlight-card p {
+  margin: 0;
+  color: #7183a0;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   ACADEMIC PROGRAMS
+========================================= */
+
+.vb-programs {
+  background: #fff;
+}
+
+.vb-heading-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  max-width: none;
+  text-align: left;
+}
+
+.vb-heading-row > div {
+  max-width: 700px;
+}
+
+.vb-heading-row > div > p {
+  margin: 0;
+  color: #7183a0;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.vb-heading-row h2 {
+  margin: 13px 0;
+}
+
+.vb-outline-link {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 48px;
+  padding: 12px 19px;
+  border: 1px solid #dbe4f2;
+  border-radius: 8px;
+  color: #173b70;
+  font-size: 13px;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+
+.vb-outline-link:hover {
+  border-color: #173b70;
+  background: #173b70;
+  color: #fff;
+}
+
+.vb-outline-link span {
+  font-size: 18px;
+}
+
+.vb-program-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.vb-program-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 345px;
+  padding: 25px;
+  border: 1px solid #e2e8f3;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 10px 32px rgba(23, 59, 112, 0.045);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.vb-program-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 42px rgba(23, 59, 112, 0.1);
+}
+
+.vb-program-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.vb-program-icon {
+  display: grid;
+  width: 51px;
+  height: 51px;
+  place-items: center;
+  border-radius: 15px;
+  background: #fff0f5;
+  color: #ed477b;
+  font-size: 25px;
+}
+
+.vb-program-number {
+  color: #aab7ca;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.vb-program-subtitle {
+  color: #7183a0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.vb-program-card h3 {
+  margin: 9px 0 12px;
+  color: #173b70;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.vb-program-card > p {
+  flex: 1;
+  margin: 0 0 22px;
+  color: #7183a0;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.vb-program-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #e7edf6;
+}
+
+.vb-program-bottom > span {
+  color: #173b70;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.vb-program-bottom a {
+  display: grid;
+  flex-shrink: 0;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  border-radius: 50%;
+  background: #173b70;
+  color: #fff;
+  font-size: 18px;
+  transition: background 0.2s ease;
+}
+
+.vb-program-bottom a:hover {
+  background: #ed477b;
+}
+
+.vb-program-teal .vb-program-icon {
+  background: #e7faf5;
+  color: #109c8c;
+}
+
+.vb-program-gold .vb-program-icon {
+  background: #fff7df;
+  color: #ba8a19;
+}
+
+.vb-program-blue .vb-program-icon {
+  background: #eaf1ff;
+  color: #3e70c6;
+}
+
+/* =========================================
+   FEE STRUCTURE
+========================================= */
+
+.vb-fees {
+  background:
+    radial-gradient(ellipse at 0% 0%, #eaf2ff 0, transparent 33%),
+    #f7f9fd;
+}
+
+.vb-fees .vb-section-heading {
+  margin-bottom: 32px;
+}
+
+.vb-fee-notice {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 30px;
+  padding: 22px 25px;
+  border: 1px solid #dce7f8;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.vb-fee-notice-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 15px;
+  background: #eaf1ff;
+  color: #173b70;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.vb-fee-notice strong {
+  color: #173b70;
+  font-size: 16px;
+}
+
+.vb-fee-notice p {
+  margin: 6px 0 0;
+  color: #7183a0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.vb-fee-card {
+  margin-top: 25px;
+  overflow: hidden;
+  border: 1px solid #dfe7f3;
+  border-radius: 19px;
+  background: #fff;
+  box-shadow: 0 10px 35px rgba(23, 59, 112, 0.045);
+}
+
+.vb-fee-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px 28px;
+  border-bottom: 1px solid #e8edf5;
+}
+
+.vb-fee-card-heading h3 {
+  margin: 8px 0 5px;
+  color: #173b70;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.vb-fee-card-heading p {
+  margin: 0;
+  color: #7183a0;
+  font-size: 13px;
+}
+
+.vb-fee-card-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 14px;
+  background: #fff0f5;
+  color: #ed477b;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.vb-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.vb-fee-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.vb-fee-table thead {
+  background: #173b70;
+  color: #fff;
+}
+
+.vb-fee-table th,
+.vb-fee-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #e9eef6;
+  font-size: 13px;
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+.vb-fee-table thead th {
+  font-size: 12px;
+  font-weight: 800;
+  white-space: normal;
+}
+
+.vb-fee-table thead th:first-child {
+  min-width: 155px;
+}
+
+.vb-fee-table thead small {
+  display: block;
+  margin-top: 6px;
+  color: #dce7ff;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.vb-fee-table tbody th {
+  min-width: 155px;
+  color: #173b70;
+  font-weight: 700;
+}
+
+.vb-fee-table tbody td {
+  color: #61738f;
+  white-space: nowrap;
+}
+
+.vb-fee-table tbody tr:nth-child(even) {
+  background: #f8faff;
+}
+
+.vb-fee-table tbody tr:hover {
+  background: #fff4f8;
+}
+
+.vb-fee-table tbody tr:last-child th,
+.vb-fee-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.vb-fee-table .vb-fee-total {
+  color: #173b70;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.vb-fee-rules {
+  margin-top: 28px;
+  padding: 30px;
+  border: 1px solid #f1dce5;
+  border-radius: 19px;
+  background: #fff;
+}
+
+.vb-fee-rules-heading h3 {
+  margin: 9px 0 20px;
+  color: #173b70;
+  font-size: 22px;
+}
+
+.vb-fee-rules ul {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding-left: 22px;
+  color: #637590;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.vb-fee-rules li::marker {
+  color: #ed477b;
+}
+
+.vb-fee-disclaimer {
+  margin: 22px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid #e8edf5;
+  color: #7183a0;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   ADMISSION CALL TO ACTION
+========================================= */
+
+.vb-admission-cta {
+  position: relative;
+  overflow: hidden;
+  padding: 66px 0;
+  background: #142f55;
+}
+
+.vb-admission-cta::before,
+.vb-admission-cta::after {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.vb-admission-cta::before {
+  top: -150px;
+  right: 8%;
+}
+
+.vb-admission-cta::after {
+  right: 2%;
+  bottom: -210px;
+  width: 350px;
+  height: 350px;
+}
+
+.vb-cta-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 45px;
+}
+
+.vb-admission-cta .vb-section-kicker {
+  color: #75dfd2;
+}
+
+.vb-admission-cta h2 {
+  max-width: 650px;
+  margin: 13px 0;
+  color: #fff;
+  font-size: clamp(28px, 3.5vw, 42px);
+  line-height: 1.2;
+  letter-spacing: -0.7px;
+}
+
+.vb-admission-cta p {
+  max-width: 600px;
+  margin: 0;
+  color: #d6e1f2;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.vb-cta-actions {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.vb-cta-actions .vb-btn {
+  white-space: nowrap;
+}
+
+.vb-cta-phone {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.vb-cta-phone:hover {
+  color: #75dfd2;
+}
+
+/* =========================================
+   ANIMATION
+========================================= */
+
 @keyframes vb-enter {
   from {
     opacity: 0;
@@ -253,14 +978,22 @@
   }
 }
 
-/* Tablet */
-@media (max-width: 900px) {
-  .vb-hero {
-    min-height: 620px;
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+  .vb-section {
+    padding: 72px 0;
   }
 
+  .vb-section-container,
   .vb-hero-container {
     width: calc(100% - 44px);
+  }
+
+  .vb-hero {
+    min-height: 620px;
   }
 
   .vb-hero-content {
@@ -275,17 +1008,51 @@
       rgba(5, 22, 44, 0.25)
     );
   }
+
+  .vb-intro-grid {
+    gap: 35px;
+  }
+
+  .vb-motto-card {
+    padding: 30px;
+  }
+
+  .vb-program-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vb-program-card {
+    min-height: 310px;
+  }
+
+  .vb-cta-inner {
+    align-items: flex-start;
+    gap: 30px;
+  }
 }
 
-/* Mobile */
-@media (max-width: 600px) {
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+  .vb-section {
+    padding: 58px 0;
+  }
+
+  .vb-section-container,
+  .vb-hero-container {
+    width: calc(100% - 34px);
+  }
+
   .vb-hero {
     min-height: 720px;
     align-items: flex-end;
   }
 
   .vb-hero-image {
-    object-fit: fill;
+    object-fit: cover;
+    object-position: center;
   }
 
   .vb-hero-overlay {
@@ -299,7 +1066,6 @@
   }
 
   .vb-hero-container {
-    width: calc(100% - 34px);
     padding: 300px 0 42px;
   }
 
@@ -328,6 +1094,10 @@
     line-height: 1.8;
   }
 
+  .vb-board {
+    font-size: 12px;
+  }
+
   .vb-buttons {
     flex-direction: column;
     gap: 10px;
@@ -344,14 +1114,194 @@
     font-size: 9px;
     letter-spacing: 1.4px;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .vb-hero-content {
-    animation: none;
+  .vb-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
 
-  .vb-home * {
+  .vb-intro-copy h2 {
+    font-size: 32px;
+  }
+
+  .vb-intro-copy p {
+    font-size: 14px;
+  }
+
+  .vb-motto-card {
+    min-height: 280px;
+    padding: 28px;
+    border-radius: 22px;
+  }
+
+  .vb-motto-card h3 {
+    font-size: 30px;
+  }
+
+  .vb-section-heading {
+    margin-bottom: 30px;
+  }
+
+  .vb-section-heading h2 {
+    font-size: 31px;
+  }
+
+  .vb-section-heading > p {
+    font-size: 14px;
+  }
+
+  .vb-highlights-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .vb-highlight-card {
+    min-height: auto;
+    padding: 25px;
+  }
+
+  .vb-highlight-card h3 {
+    margin-top: 17px;
+  }
+
+  .vb-heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+  }
+
+  .vb-heading-row h2 {
+    font-size: 31px;
+  }
+
+  .vb-program-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .vb-program-card {
+    min-height: 300px;
+    padding: 24px;
+  }
+
+  .vb-program-top {
+    margin-bottom: 22px;
+  }
+
+  .vb-fee-notice {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .vb-fee-notice-icon {
+    width: 43px;
+    height: 43px;
+  }
+
+  .vb-fee-card {
+    border-radius: 14px;
+  }
+
+  .vb-fee-card-heading {
+    padding: 20px;
+  }
+
+  .vb-fee-card-heading h3 {
+    font-size: 19px;
+  }
+
+  .vb-fee-card-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .vb-fee-table {
+    min-width: 730px;
+  }
+
+  .vb-fee-table th,
+  .vb-fee-table td {
+    padding: 13px 14px;
+    font-size: 12px;
+  }
+
+  .vb-fee-rules {
+    padding: 22px 19px;
+  }
+
+  .vb-fee-rules-heading h3 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+
+  .vb-fee-rules ul {
+    padding-left: 19px;
+    font-size: 13px;
+  }
+
+  .vb-cta-inner {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .vb-admission-cta h2 {
+    font-size: 31px;
+  }
+
+  .vb-cta-actions {
+    width: 100%;
+  }
+
+  .vb-cta-actions .vb-btn {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 380px) {
+  .vb-section-container,
+  .vb-hero-container {
+    width: calc(100% - 26px);
+  }
+
+  .vb-hero-content h1 {
+    font-size: 32px;
+  }
+
+  .vb-hero-container {
+    padding-top: 270px;
+  }
+
+  .vb-section-heading h2,
+  .vb-intro-copy h2 {
+    font-size: 28px;
+  }
+
+  .vb-motto-card {
+    padding: 23px;
+  }
+
+  .vb-fee-card-heading {
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .vb-fee-card-heading h3 {
+    font-size: 17px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .vb-home *,
+  .vb-home *::before,
+  .vb-home *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
     transition: none !important;
   }
 }
