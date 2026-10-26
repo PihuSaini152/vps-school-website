@@ -2,7 +2,6 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 
 import Navbar from './components/Navbar/Navbar.jsx'
 import Footer from './components/Footer/Footer.jsx'
-import Watermark from './components/Watermark.jsx'
 
 import Home from './pages/Home/Home.jsx'
 import About from './pages/About/About.jsx'
@@ -20,7 +19,7 @@ export default function App() {
 
   return (
     <>
-      <Watermark />
+     
 
       {!isAdminRoute && <Navbar />}
 
