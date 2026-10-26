@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import "./Admissions.css";
 
@@ -15,6 +14,17 @@ const initialForm = {
   consent: false,
 };
 
+const initialJobForm = {
+  fullName: "",
+  mobile: "",
+  email: "",
+  applyingFor: "",
+  qualification: "",
+  experienceType: "Fresher",
+  totalExperience: "",
+  additionalMessage: "",
+};
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function Admissions() {
@@ -22,12 +32,28 @@ export default function Admissions() {
   const [status, setStatus] = useState("idle");
   const [statusMessage, setStatusMessage] = useState("");
 
+  const [jobForm, setJobForm] = useState(initialJobForm);
+  const [jobStatus, setJobStatus] = useState("idle");
+  const [jobStatusMessage, setJobStatusMessage] = useState("");
+
   function handleChange(event) {
     const { name, value, checked, type } = event.target;
 
     setForm((previous) => ({
       ...previous,
       [name]: type === "checkbox" ? checked : value,
+    }));
+  }
+
+  function handleJobChange(event) {
+    const { name, value } = event.target;
+
+    setJobForm((previous) => ({
+      ...previous,
+      [name]: value,
+      ...(name === "experienceType" && value === "Fresher"
+        ? { totalExperience: "" }
+        : {}),
     }));
   }
 
@@ -47,27 +73,59 @@ export default function Admissions() {
 
       if (!response.ok) {
         throw new Error(
-          result.message || "Submission nahi ho paya. Please try again."
+          result.message || "Unable to submit admission enquiry."
         );
       }
 
       setStatus("success");
       setStatusMessage(
-        result.message ||
-          "Your admission enquiry has been submitted successfully!"
+        result.message || "Admission enquiry submitted successfully!"
       );
       setForm(initialForm);
     } catch (error) {
       setStatus("error");
       setStatusMessage(
-        error.message ||
-          "Server se connection nahi ho paya. Please try again later."
+        error.message || "Unable to connect to the server. Please try again."
+      );
+    }
+  }
+
+  async function handleJobSubmit(event) {
+    event.preventDefault();
+    setJobStatus("loading");
+    setJobStatusMessage("");
+
+    try {
+      const response = await fetch(`${API_URL}/api/job-applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(jobForm),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Unable to submit job application."
+        );
+      }
+
+      setJobStatus("success");
+      setJobStatusMessage(
+        result.message || "Job application submitted successfully!"
+      );
+      setJobForm(initialJobForm);
+    } catch (error) {
+      setJobStatus("error");
+      setJobStatusMessage(
+        error.message || "Unable to connect to the server. Please try again."
       );
     }
   }
 
   return (
     <main className="admission-page">
+      {/* Admission Hero */}
       <section className="admission-hero">
         <div className="admission-hero-inner">
           <span className="admission-eyebrow">
@@ -96,6 +154,7 @@ export default function Admissions() {
         </div>
       </section>
 
+      {/* Admission Form */}
       <section className="admission-content">
         <div className="admission-side">
           <span className="admission-section-label">
@@ -128,18 +187,9 @@ export default function Admissions() {
           <div className="admission-contact-note">
             <strong>Need assistance?</strong>
             <p>Vidya Bharati Public School, Sikar, Rajasthan</p>
-
-            <a href="tel:8302977245">
-              Call: 8302977245
-            </a>
-
-            <a href="tel:9352812501">
-              Call: 9352812501
-            </a>
-
-            <a href="mailto:vbpssikar@gmail.com">
-              vbpssikar@gmail.com
-            </a>
+            <a href="tel:8302977245">Call: 8302977245</a>
+            <a href="tel:9352812501">Call: 9352812501</a>
+            <a href="mailto:vbpssikar@gmail.com">vbpssikar@gmail.com</a>
           </div>
         </div>
 
@@ -171,9 +221,7 @@ export default function Admissions() {
 
           <form onSubmit={handleSubmit} className="admission-form">
             <div className="admission-field">
-              <label htmlFor="studentName">
-                Student's full name *
-              </label>
+              <label htmlFor="studentName">Student's full name *</label>
               <input
                 id="studentName"
                 name="studentName"
@@ -187,9 +235,7 @@ export default function Admissions() {
             </div>
 
             <div className="admission-field">
-              <label htmlFor="classApplying">
-                Class applying for *
-              </label>
+              <label htmlFor="classApplying">Class applying for *</label>
               <select
                 id="classApplying"
                 name="classApplying"
@@ -202,10 +248,7 @@ export default function Admissions() {
                   "Nursery",
                   "LKG",
                   "UKG",
-                  ...Array.from(
-                    { length: 12 },
-                    (_, i) => `Class ${i + 1}`
-                  ),
+                  ...Array.from({ length: 12 }, (_, i) => `Class ${i + 1}`),
                 ].map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -228,9 +271,7 @@ export default function Admissions() {
             </div>
 
             <div className="admission-field">
-              <label htmlFor="guardianName">
-                Parent / guardian name *
-              </label>
+              <label htmlFor="guardianName">Parent / guardian name *</label>
               <input
                 id="guardianName"
                 name="guardianName"
@@ -260,9 +301,7 @@ export default function Admissions() {
             </div>
 
             <div className="admission-field">
-              <label htmlFor="whatsapp">
-                WhatsApp number (optional)
-              </label>
+              <label htmlFor="whatsapp">WhatsApp number (optional)</label>
               <input
                 id="whatsapp"
                 name="whatsapp"
@@ -347,6 +386,213 @@ export default function Admissions() {
 
               <p>
                 Your information will be used to respond to your enquiry.
+              </p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* Job Application Form */}
+      <section
+        className="admission-content job-application-section"
+        id="job-application"
+      >
+        <div className="admission-side">
+          <span className="admission-section-label">CAREERS AT VPS</span>
+
+          <h2>Build your career with us.</h2>
+
+          <p>
+            Interested in working at Vidya Bharati Public School? Complete
+            the job application form. Our school team can review your details
+            and contact you if a suitable opportunity is available.
+          </p>
+
+          <div className="admission-info-card">
+            <span className="admission-info-icon">01</span>
+            <div>
+              <h3>Share your profile</h3>
+              <p>Tell us about your qualification and experience.</p>
+            </div>
+          </div>
+
+          <div className="admission-info-card">
+            <span className="admission-info-icon">02</span>
+            <div>
+              <h3>Application review</h3>
+              <p>The school team can review your submitted details.</p>
+            </div>
+          </div>
+
+          <div className="admission-contact-note">
+            <strong>Career Enquiries</strong>
+            <p>Vidya Bharati Public School, Sikar, Rajasthan</p>
+            <a href="mailto:vbpssikar@gmail.com">vbpssikar@gmail.com</a>
+          </div>
+        </div>
+
+        <div className="admission-form-card">
+          <div className="admission-form-heading">
+            <span className="admission-section-label">JOB APPLICATION</span>
+            <h2>Apply for a Position</h2>
+            <p>Fields marked * are required.</p>
+          </div>
+
+          {jobStatusMessage && (
+            <div
+              className={`admission-alert admission-alert-${jobStatus}`}
+              role="status"
+              aria-live="polite"
+            >
+              <strong>
+                {jobStatus === "success"
+                  ? "✓ Application submitted"
+                  : jobStatus === "error"
+                    ? "Submission failed"
+                    : "Please wait"}
+              </strong>
+              <p>{jobStatusMessage}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleJobSubmit} className="admission-form">
+            <div className="admission-field">
+              <label htmlFor="job-fullName">Full name *</label>
+              <input
+                id="job-fullName"
+                name="fullName"
+                value={jobForm.fullName}
+                onChange={handleJobChange}
+                placeholder="Enter your full name"
+                autoComplete="name"
+                maxLength={150}
+                required
+              />
+            </div>
+
+            <div className="admission-field">
+              <label htmlFor="job-mobile">Mobile number *</label>
+              <input
+                id="job-mobile"
+                name="mobile"
+                type="tel"
+                inputMode="numeric"
+                pattern="[6-9][0-9]{9}"
+                title="Enter a valid 10-digit Indian mobile number"
+                value={jobForm.mobile}
+                onChange={handleJobChange}
+                placeholder="10-digit mobile number"
+                maxLength={10}
+                required
+              />
+            </div>
+
+            <div className="admission-field admission-field-full">
+              <label htmlFor="job-email">Email address *</label>
+              <input
+                id="job-email"
+                name="email"
+                type="email"
+                value={jobForm.email}
+                onChange={handleJobChange}
+                placeholder="yourname@example.com"
+                maxLength={150}
+                required
+              />
+            </div>
+
+            <div className="admission-field admission-field-full">
+              <label htmlFor="job-applyingFor">Applying for post *</label>
+              <select
+                id="job-applyingFor"
+                name="applyingFor"
+                value={jobForm.applyingFor}
+                onChange={handleJobChange}
+                required
+              >
+                <option value="">Select a position</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Computer Teacher">Computer Teacher</option>
+                <option value="Clerk">Clerk</option>
+                <option value="Accountant">Accountant</option>
+                <option value="Peon">Peon</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="admission-field admission-field-full">
+              <label htmlFor="job-qualification">Qualification *</label>
+              <input
+                id="job-qualification"
+                name="qualification"
+                value={jobForm.qualification}
+                onChange={handleJobChange}
+                placeholder="e.g. B.A., B.Ed., BCA, M.Sc."
+                maxLength={200}
+                required
+              />
+            </div>
+
+            <div className="admission-field admission-field-full">
+              <label htmlFor="job-experienceType">Experience *</label>
+              <select
+                id="job-experienceType"
+                name="experienceType"
+                value={jobForm.experienceType}
+                onChange={handleJobChange}
+                required
+              >
+                <option value="Fresher">Fresher</option>
+                <option value="Experienced">Experienced</option>
+              </select>
+            </div>
+
+            {jobForm.experienceType === "Experienced" && (
+              <div className="admission-field admission-field-full">
+                <label htmlFor="job-totalExperience">
+                  Total experience *
+                </label>
+                <input
+                  id="job-totalExperience"
+                  name="totalExperience"
+                  value={jobForm.totalExperience}
+                  onChange={handleJobChange}
+                  placeholder="e.g. 2 years or 6 months"
+                  maxLength={100}
+                  required
+                />
+              </div>
+            )}
+
+            <div className="admission-field admission-field-full">
+              <label htmlFor="job-additionalMessage">
+                Additional message (optional)
+              </label>
+              <textarea
+                id="job-additionalMessage"
+                name="additionalMessage"
+                value={jobForm.additionalMessage}
+                onChange={handleJobChange}
+                placeholder="Tell us about your skills or relevant experience..."
+                rows={4}
+                maxLength={2000}
+              />
+            </div>
+
+            <div className="admission-submit-wrap admission-field-full">
+              <button
+                type="submit"
+                className="admission-submit"
+                disabled={jobStatus === "loading"}
+              >
+                {jobStatus === "loading"
+                  ? "Submitting Application..."
+                  : "Submit Job Application"}
+                <span aria-hidden="true">→</span>
+              </button>
+
+              <p>
+                Your details will be used to review your job application.
               </p>
             </div>
           </form>

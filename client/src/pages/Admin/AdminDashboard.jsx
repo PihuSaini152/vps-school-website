@@ -1,4 +1,4 @@
-   import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './AdminDashboard.css'
 
@@ -14,12 +14,19 @@ const MENU_ITEMS = [
     color: '#eaf1ff',
   },
   {
-    id: 'gallery',
-    icon: '🖼️',
-    title: 'Gallery Management',
-    description: 'Upload, view and delete school photos.',
-    color: '#fff0f5',
+    id: 'jobs',
+    icon: '💼',
+    title: 'Job Applications',
+    description: 'View and manage submitted job applications.',
+    color: '#fff4df',
   },
+{
+  id: 'gallery',
+  icon: '🖼️',
+  title: 'Website Image Manager',
+  description: 'Manage photos across website pages, except the Home Page.',
+  color: '#fff0f5',
+},
   {
     id: 'notices',
     icon: '📢',
@@ -34,7 +41,7 @@ function getSectionFromPath(pathname) {
     .replace('/admin/dashboard', '')
     .replace(/^\/+|\/+$/g, '')
 
-  return ['enquiries', 'gallery', 'notices'].includes(section)
+  return ['enquiries', 'jobs', 'gallery', 'notices'].includes(section)
     ? section
     : 'home'
 }
@@ -109,6 +116,7 @@ export default function AdminDashboard() {
   )
 
   const [enquiries, setEnquiries] = useState([])
+  const [jobApplications, setJobApplications] = useState([])
   const [galleryItems, setGalleryItems] = useState([])
   const [notices, setNotices] = useState([])
 
@@ -194,6 +202,7 @@ export default function AdminDashboard() {
     setActiveSection(section)
   }
 
+  // Admission Enquiries
   const loadEnquiries = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -214,6 +223,30 @@ export default function AdminDashboard() {
     }
   }, [apiRequest])
 
+  // Job Applications
+  const loadJobApplications = useCallback(async () => {
+    setLoading(true)
+    setError('')
+
+    try {
+      const data = await apiRequest('/api/admin/job-applications')
+      const rows = Array.isArray(data) ? data : data.applications
+
+      if (!Array.isArray(rows)) {
+        throw new Error(
+          'Server response में job applications list नहीं मिली।'
+        )
+      }
+
+      setJobApplications(rows)
+    } catch (err) {
+      setError(err.message || 'Unable to load job applications.')
+    } finally {
+      setLoading(false)
+    }
+  }, [apiRequest])
+
+  // Gallery
   const loadGallery = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -234,6 +267,7 @@ export default function AdminDashboard() {
     }
   }, [apiRequest])
 
+  // Notices
   const loadNotices = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -261,16 +295,19 @@ export default function AdminDashboard() {
     }
 
     if (activeSection === 'enquiries') loadEnquiries()
+    if (activeSection === 'jobs') loadJobApplications()
     if (activeSection === 'gallery') loadGallery()
     if (activeSection === 'notices') loadNotices()
   }, [
     activeSection,
     logout,
     loadEnquiries,
+    loadJobApplications,
     loadGallery,
     loadNotices,
   ])
 
+  // Delete admission enquiry
   const deleteEnquiry = async (id, studentName) => {
     if (
       !window.confirm(
@@ -304,6 +341,41 @@ export default function AdminDashboard() {
     }
   }
 
+  // Delete job application
+  const deleteJobApplication = async (item) => {
+    if (
+      !window.confirm(
+        `क्या आप ${item.full_name || 'इस applicant'} की job application permanently delete करना चाहते हैं?`
+      )
+    ) {
+      return
+    }
+
+    setDeletingId(item.id)
+    setError('')
+    setSuccessMessage('')
+
+    try {
+      const data = await apiRequest(
+        `/api/admin/job-applications/${encodeURIComponent(item.id)}`,
+        { method: 'DELETE' }
+      )
+
+      setJobApplications((old) =>
+        old.filter((app) => String(app.id) !== String(item.id))
+      )
+
+      setSuccessMessage(
+        data.message || 'Job application deleted successfully.'
+      )
+    } catch (err) {
+      setError(err.message || 'Unable to delete job application.')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  // Upload gallery photo
   const uploadGalleryPhoto = async (event) => {
     event.preventDefault()
 
@@ -339,12 +411,9 @@ export default function AdminDashboard() {
 
       setGalleryTitle('')
       setGalleryFile(null)
-
       event.currentTarget.reset()
 
-      setSuccessMessage(
-        data.message || 'Photo uploaded successfully.'
-      )
+      setSuccessMessage(data.message || 'Photo uploaded successfully.')
 
       await loadGallery()
     } catch (err) {
@@ -354,6 +423,7 @@ export default function AdminDashboard() {
     }
   }
 
+  // Delete gallery photo
   const deleteGalleryPhoto = async (item) => {
     if (
       !window.confirm(
@@ -377,9 +447,7 @@ export default function AdminDashboard() {
         old.filter((photo) => String(photo.id) !== String(item.id))
       )
 
-      setSuccessMessage(
-        data.message || 'Photo deleted successfully.'
-      )
+      setSuccessMessage(data.message || 'Photo deleted successfully.')
     } catch (err) {
       setError(err.message || 'Unable to delete photo.')
     } finally {
@@ -387,6 +455,7 @@ export default function AdminDashboard() {
     }
   }
 
+  // Notice form
   const resetNoticeForm = () => {
     setNoticeTitle('')
     setNoticeBody('')
@@ -479,9 +548,7 @@ export default function AdminDashboard() {
         resetNoticeForm()
       }
 
-      setSuccessMessage(
-        data.message || 'Notice deleted successfully.'
-      )
+      setSuccessMessage(data.message || 'Notice deleted successfully.')
     } catch (err) {
       setError(err.message || 'Unable to delete notice.')
     } finally {
@@ -489,16 +556,17 @@ export default function AdminDashboard() {
     }
   }
 
+  // Shared success and error messages
   const renderMessages = () => (
     <>
       {error && (
         <div className="admin-error" role="alert">
           <span>{error}</span>
-
           <button
             type="button"
             onClick={() => {
               if (activeSection === 'enquiries') loadEnquiries()
+              else if (activeSection === 'jobs') loadJobApplications()
               else if (activeSection === 'gallery') loadGallery()
               else if (activeSection === 'notices') loadNotices()
             }}
@@ -516,6 +584,7 @@ export default function AdminDashboard() {
     </>
   )
 
+  // Admission enquiries screen
   const renderEnquiries = () => (
     <section className="admin-content-section">
       <button
@@ -595,20 +664,16 @@ export default function AdminDashboard() {
                   <td className="admin-student-name">
                     {item.student_name || '—'}
                   </td>
-
                   <td className="admin-nowrap">
                     {String(item.applying_class || '—').replace(
                       /^class\s+/i,
                       ''
                     )}
                   </td>
-
                   <td className="admin-nowrap">
                     {formatDate(item.date_of_birth)}
                   </td>
-
                   <td>{item.parent_name || '—'}</td>
-
                   <td className="admin-nowrap">
                     {item.mobile_number ? (
                       <a href={`tel:${item.mobile_number}`}>
@@ -618,7 +683,6 @@ export default function AdminDashboard() {
                       '—'
                     )}
                   </td>
-
                   <td className="admin-nowrap">
                     {item.whatsapp_number ? (
                       <a
@@ -634,26 +698,20 @@ export default function AdminDashboard() {
                       '—'
                     )}
                   </td>
-
                   <td className="admin-email-cell">
                     {item.email ? (
-                      <a href={`mailto:${item.email}`}>
-                        {item.email}
-                      </a>
+                      <a href={`mailto:${item.email}`}>{item.email}</a>
                     ) : (
                       '—'
                     )}
                   </td>
-
                   <td>{item.current_school || '—'}</td>
                   <td className="admin-message-cell">
                     {item.message || '—'}
                   </td>
-
                   <td className="admin-nowrap">
                     {formatDateTime(item.created_at)}
                   </td>
-
                   <td className="admin-action-cell">
                     <button
                       type="button"
@@ -679,6 +737,135 @@ export default function AdminDashboard() {
     </section>
   )
 
+  // Job applications screen
+  const renderJobs = () => (
+    <section className="admin-content-section">
+      <button
+        type="button"
+        className="admin-back"
+        onClick={() => openSection('home')}
+      >
+        ← Back to Dashboard
+      </button>
+
+      <div className="admin-content-heading">
+        <div>
+          <p className="admin-eyebrow">CAREERS</p>
+          <h1>Job Applications</h1>
+          <p className="admin-subtitle">
+            View and manage applications submitted by job applicants.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          className="admin-primary-button"
+          onClick={loadJobApplications}
+          disabled={loading}
+        >
+          {loading ? 'Loading...' : '↻ Refresh'}
+        </button>
+      </div>
+
+      {renderMessages()}
+
+      <div className="admin-enquiry-summary">
+        <span>Total job applications</span>
+        <strong>{jobApplications.length}</strong>
+      </div>
+
+      {loading && jobApplications.length === 0 ? (
+        <div className="admin-empty-state">
+          <span>⏳</span>
+          <h3>Loading applications...</h3>
+          <p>Please wait.</p>
+        </div>
+      ) : error && jobApplications.length === 0 ? (
+        <div className="admin-empty-state">
+          <span>⚠️</span>
+          <h3>Unable to load applications</h3>
+          <p>Check the backend server and job applications API.</p>
+        </div>
+      ) : jobApplications.length === 0 ? (
+        <div className="admin-empty-state">
+          <span>💼</span>
+          <h3>No job applications yet</h3>
+          <p>Submitted job application forms will appear here.</p>
+        </div>
+      ) : (
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Applying For</th>
+                <th>Qualification</th>
+                <th>Experience Type</th>
+                <th>Total Experience</th>
+                <th>Additional Message</th>
+                <th>Received On</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {jobApplications.map((item) => (
+                <tr key={item.id}>
+                  <td className="admin-student-name">
+                    {item.full_name || '—'}
+                  </td>
+                  <td className="admin-nowrap">
+                    {item.mobile_number ? (
+                      <a href={`tel:${item.mobile_number}`}>
+                        {item.mobile_number}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                  <td className="admin-email-cell">
+                    {item.email ? (
+                      <a href={`mailto:${item.email}`}>{item.email}</a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                  <td>{item.applying_for || '—'}</td>
+                  <td>{item.qualification || '—'}</td>
+                  <td>{item.experience_type || '—'}</td>
+                  <td>{item.total_experience || '—'}</td>
+                  <td className="admin-message-cell">
+                    {item.additional_message || '—'}
+                  </td>
+                  <td className="admin-nowrap">
+                    {formatDateTime(item.created_at)}
+                  </td>
+                  <td className="admin-action-cell">
+                    <button
+                      type="button"
+                      className="admin-delete-button"
+                      title="Delete job application"
+                      aria-label={`Delete application for ${
+                        item.full_name || 'applicant'
+                      }`}
+                      disabled={deletingId !== null}
+                      onClick={() => deleteJobApplication(item)}
+                    >
+                      {deletingId === item.id ? '...' : <TrashIcon />}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  )
+
+  // Gallery screen
   const renderGallery = () => (
     <section className="admin-content-section">
       <button
@@ -715,15 +902,11 @@ export default function AdminDashboard() {
         onSubmit={uploadGalleryPhoto}
       >
         <h2>Upload New Photo</h2>
-
         <p className="admin-form-help">
           School की photo चुनें और चाहें तो उसका title भी लिखें।
         </p>
 
-        <label htmlFor="gallery-title">
-          Photo Title (Optional)
-        </label>
-
+        <label htmlFor="gallery-title">Photo Title (Optional)</label>
         <input
           id="gallery-title"
           type="text"
@@ -736,7 +919,6 @@ export default function AdminDashboard() {
         <label htmlFor="gallery-image" className="gallery-file-label">
           Choose Photo
         </label>
-
         <input
           id="gallery-image"
           className="gallery-file-input"
@@ -748,13 +930,9 @@ export default function AdminDashboard() {
         />
 
         <div className="gallery-file-picker">
-          <label
-            htmlFor="gallery-image"
-            className="gallery-choose-button"
-          >
+          <label htmlFor="gallery-image" className="gallery-choose-button">
             📁 Choose Photo
           </label>
-
           <span className="gallery-selected-filename">
             {galleryFile
               ? galleryFile.name
@@ -772,13 +950,11 @@ export default function AdminDashboard() {
               src={URL.createObjectURL(galleryFile)}
               alt="Selected photo preview"
             />
-
             <button
               type="button"
               className="admin-secondary-button"
               onClick={() => {
                 setGalleryFile(null)
-
                 const input = document.getElementById('gallery-image')
                 if (input) input.value = ''
               }}
@@ -816,9 +992,7 @@ export default function AdminDashboard() {
         <div className="admin-empty-state">
           <span>🖼️</span>
           <h3>No photos uploaded yet</h3>
-          <p>
-            ऊपर Choose Photo पर क्लिक करके अपनी पहली photo upload करें।
-          </p>
+          <p>ऊपर Choose Photo पर क्लिक करके अपनी पहली photo upload करें।</p>
         </div>
       ) : (
         <div className="admin-gallery-grid">
@@ -847,7 +1021,6 @@ export default function AdminDashboard() {
 
                 <div className="admin-gallery-card-info">
                   <strong>{item.title || 'School Photo'}</strong>
-
                   <button
                     type="button"
                     className="admin-delete-button"
@@ -867,6 +1040,7 @@ export default function AdminDashboard() {
     </section>
   )
 
+  // Notices screen
   const renderNotices = () => (
     <section className="admin-content-section">
       <button
@@ -899,12 +1073,9 @@ export default function AdminDashboard() {
       {renderMessages()}
 
       <form className="admin-editor-form" onSubmit={submitNotice}>
-        <h2>
-          {editingNoticeId !== null ? 'Edit Notice' : 'Add New Notice'}
-        </h2>
+        <h2>{editingNoticeId !== null ? 'Edit Notice' : 'Add New Notice'}</h2>
 
         <label htmlFor="notice-title">Notice title</label>
-
         <input
           id="notice-title"
           type="text"
@@ -916,7 +1087,6 @@ export default function AdminDashboard() {
         />
 
         <label htmlFor="notice-body">Notice details</label>
-
         <textarea
           id="notice-body"
           value={noticeBody}
@@ -930,9 +1100,7 @@ export default function AdminDashboard() {
           <input
             type="checkbox"
             checked={noticePublished}
-            onChange={(event) =>
-              setNoticePublished(event.target.checked)
-            }
+            onChange={(event) => setNoticePublished(event.target.checked)}
           />
           Publish this notice on the website
         </label>
@@ -984,12 +1152,9 @@ export default function AdminDashboard() {
               <div className="admin-notice-card-heading">
                 <div>
                   <h3>{item.title}</h3>
-
                   <span
                     className={`admin-status-badge ${
-                      Number(item.is_published)
-                        ? 'is-published'
-                        : 'is-draft'
+                      Number(item.is_published) ? 'is-published' : 'is-draft'
                     }`}
                   >
                     {Number(item.is_published) ? 'Published' : 'Draft'}
@@ -1020,9 +1185,7 @@ export default function AdminDashboard() {
 
               <p className="admin-notice-body">{item.body}</p>
 
-              <small>
-                Added: {formatDateTime(item.created_at)}
-              </small>
+              <small>Added: {formatDateTime(item.created_at)}</small>
             </article>
           ))}
         </div>
@@ -1048,17 +1211,11 @@ export default function AdminDashboard() {
             <p className="admin-school-name">
               VIDYA BHARATI PUBLIC SCHOOL
             </p>
-            <span className="admin-panel-label">
-              School Administration
-            </span>
+            <span className="admin-panel-label">School Administration</span>
           </div>
         </div>
 
-        <button
-          type="button"
-          className="admin-logout"
-          onClick={logout}
-        >
+        <button type="button" className="admin-logout" onClick={logout}>
           <span aria-hidden="true">↪</span> Logout
         </button>
       </header>
@@ -1082,18 +1239,12 @@ export default function AdminDashboard() {
 
             <div className="admin-stats">
               <div>
-                <span className="admin-stat-label">
-                  Management Sections
-                </span>
-                <strong>
-                  {String(MENU_ITEMS.length).padStart(2, '0')}
-                </strong>
+                <span className="admin-stat-label">Management Sections</span>
+                <strong>{String(MENU_ITEMS.length).padStart(2, '0')}</strong>
               </div>
 
               <div>
-                <span className="admin-stat-label">
-                  Admission Enquiries
-                </span>
+                <span className="admin-stat-label">Admission Enquiries</span>
                 <strong>
                   <button
                     type="button"
@@ -1101,6 +1252,19 @@ export default function AdminDashboard() {
                     onClick={() => openSection('enquiries')}
                   >
                     View enquiries →
+                  </button>
+                </strong>
+              </div>
+
+              <div>
+                <span className="admin-stat-label">Job Applications</span>
+                <strong>
+                  <button
+                    type="button"
+                    className="admin-stat-link"
+                    onClick={() => openSection('jobs')}
+                  >
+                    View applications →
                   </button>
                 </strong>
               </div>
@@ -1126,9 +1290,7 @@ export default function AdminDashboard() {
                     {item.icon}
                   </span>
 
-                  <span className="admin-card-title">
-                    {item.title}
-                  </span>
+                  <span className="admin-card-title">{item.title}</span>
 
                   <span className="admin-card-description">
                     {item.description}
@@ -1143,6 +1305,8 @@ export default function AdminDashboard() {
           </>
         ) : activeSection === 'enquiries' ? (
           renderEnquiries()
+        ) : activeSection === 'jobs' ? (
+          renderJobs()
         ) : activeSection === 'gallery' ? (
           renderGallery()
         ) : (

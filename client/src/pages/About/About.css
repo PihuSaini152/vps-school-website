@@ -1259,3 +1259,172 @@
     min-height: 0;
   }
 }
+
+
+/* =========================================
+   OUR TEAM SECTION
+   ========================================= */
+
+.vb-about-team {
+  padding: 90px 24px;
+  background:
+    radial-gradient(circle at 0% 0%, #fce8ef 0, transparent 30%),
+    linear-gradient(180deg, #ffffff, #f5f8fd);
+}
+
+.vb-about-team-inner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.vb-about-team-heading {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.vb-about-team-heading h2 {
+  margin: 0;
+  color: var(--vb-navy);
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.vb-about-team-heading h2 span {
+  color: var(--vb-pink);
+}
+
+.vb-about-team-heading > p {
+  max-width: 620px;
+  margin: 16px auto 0;
+  color: var(--vb-muted);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.vb-about-team-photo-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--vb-border);
+  border-radius: 22px;
+  background: #eaf0fa;
+  box-shadow: 0 20px 55px rgba(24, 57, 102, 0.12);
+}
+
+.vb-about-team-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 680px;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.vb-about-team-photo-wrap:hover .vb-about-team-photo {
+  transform: scale(1.015);
+}
+
+.vb-about-team-photo-caption {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 17px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 13px;
+  background: rgba(16, 41, 76, 0.86);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+.vb-about-team-photo-caption span {
+  color: #ffd0df;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.vb-about-team-photo-caption strong {
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.vb-about-team-quote {
+  position: relative;
+  max-width: 850px;
+  margin: 35px auto 0;
+  padding: 32px 38px;
+  border: 1px solid #f3dce5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(24, 57, 102, 0.06);
+  text-align: center;
+}
+
+.vb-about-team-quote-icon {
+  display: block;
+  height: 43px;
+  color: #f8c8d8;
+  font-family: Georgia, serif;
+  font-size: 70px;
+  line-height: 1;
+}
+
+.vb-about-team-quote p {
+  margin: 10px 0 16px;
+  color: var(--vb-navy);
+  font-size: clamp(17px, 2.2vw, 23px);
+  font-weight: 650;
+  line-height: 1.8;
+}
+
+.vb-about-team-handshake {
+  font-size: 24px;
+}
+
+@media (max-width: 700px) {
+  .vb-about-team {
+    padding: 65px 18px;
+  }
+
+  .vb-about-team-heading {
+    margin-bottom: 28px;
+  }
+
+  .vb-about-team-photo-wrap {
+    border-radius: 15px;
+  }
+
+  .vb-about-team-photo-caption {
+    right: 9px;
+    bottom: 9px;
+    left: 9px;
+    padding: 11px 12px;
+    border-radius: 9px;
+  }
+
+  .vb-about-team-photo-caption span {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  .vb-about-team-photo-caption strong {
+    font-size: 14px;
+  }
+
+  .vb-about-team-quote {
+    margin-top: 24px;
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+
+  .vb-about-team-quote p {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+}

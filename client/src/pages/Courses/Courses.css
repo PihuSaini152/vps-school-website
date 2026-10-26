@@ -1158,3 +1158,22 @@
   font-size: 13px;
   text-align: center;
 }
+
+/* Center only Nursery and KG Prep cards */
+.course-stages .course-stream-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 420px));
+  justify-content: center;
+  align-items: stretch;
+  gap: 28px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .course-stages .course-stream-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 480px;
+  }
+}

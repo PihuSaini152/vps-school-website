@@ -1,7 +1,11 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./About.css";
+
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/$/, "");
+
 
 const schoolSlides = [
   {
@@ -352,6 +356,44 @@ export default function About() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+            {/* OUR TEAM SECTION */}
+      <section className="vb-about-team">
+        <div className="vb-about-team-inner">
+          <div className="vb-about-team-heading">
+            <span className="vb-about-eyebrow">THE PEOPLE BEHIND VPS</span>
+            <h2>
+              Meet Our <span>Team</span>
+            </h2>
+            <p>
+              Dedicated educators working together to inspire young minds
+              and build a brighter future.
+            </p>
+          </div>
+
+          <div className="vb-about-team-photo-wrap">
+            <img
+              src="/About/school-group.jpg"
+              alt="Vidya Bharati Public School teachers and staff"
+              className="vb-about-team-photo"
+              loading="lazy"
+            />
+            <div className="vb-about-team-photo-caption">
+              <span>VIDYA BHARATI PUBLIC SCHOOL</span>
+              <strong>One Team. One Vision.</strong>
+            </div>
+          </div>
+
+          <blockquote className="vb-about-team-quote">
+            <span className="vb-about-team-quote-icon">“</span>
+            <p>
+              Alone we can do so little; together we can achieve so much.
+              A strong team, one vision, endless possibilities.
+            </p>
+            <span className="vb-about-team-handshake">🤝✨</span>
+          </blockquote>
         </div>
       </section>
 

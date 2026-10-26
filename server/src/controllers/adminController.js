@@ -230,3 +230,67 @@ export async function deleteNotice(req, res) {
     })
   }
 }
+
+// Get job applications for admin
+export async function getJobApplications(_req, res) {
+  try {
+    const [rows] = await getPool().execute(
+      `SELECT
+        id,
+        full_name,
+        mobile_number,
+        email,
+        applying_for,
+        qualification,
+        experience_type,
+        total_experience,
+        additional_message,
+        created_at
+       FROM job_applications
+       ORDER BY created_at DESC`
+    )
+
+    return res.json(rows)
+  } catch (error) {
+    console.error('Job applications fetch failed:', error.message)
+
+    return res.status(500).json({
+      message: 'Unable to load job applications.',
+    })
+  }
+}
+
+// Delete a job application
+export async function deleteJobApplication(req, res) {
+  try {
+    const { id } = req.params
+
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({
+        message: 'Invalid job application ID.',
+      })
+    }
+
+    const [result] = await getPool().execute(
+      'DELETE FROM job_applications WHERE id = ?',
+      [id]
+    )
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: 'Job application not found.',
+      })
+    }
+
+    return res.json({
+      success: true,
+      message: 'Job application deleted successfully.',
+    })
+  } catch (error) {
+    console.error('Job application deletion failed:', error.message)
+
+    return res.status(500).json({
+      message: 'Unable to delete job application.',
+    })
+  }
+}
