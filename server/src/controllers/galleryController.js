@@ -12,18 +12,22 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true })
 }
 
+function getImageUrl(req, filename) {
+  return `${req.protocol}://${req.get('host')}/uploads/${encodeURIComponent(filename)}`
+}
+
 // Get all gallery photos
 export async function getGallery(req, res) {
   try {
-    const [rows] = await getPool().execute(
+    const { rows } = await getPool().query(
       `SELECT id, title, filename, created_at
-       FROM gallery
+       FROM public.gallery
        ORDER BY created_at DESC`
     )
 
     const gallery = rows.map((item) => ({
       ...item,
-      image_url: `${req.protocol}://${req.get('host')}/uploads/${encodeURIComponent(item.filename)}`,
+      image_url: getImageUrl(req, item.filename),
     }))
 
     return res.json(gallery)
@@ -48,18 +52,19 @@ export async function uploadGalleryPhoto(req, res) {
     const title =
       typeof req.body.title === 'string' ? req.body.title.trim() : ''
 
-    const [result] = await getPool().execute(
-      `INSERT INTO gallery (title, filename)
-       VALUES (?, ?)`,
+    const result = await getPool().query(
+      `INSERT INTO public.gallery (title, filename)
+       VALUES ($1, $2)
+       RETURNING id`,
       [title, req.file.filename]
     )
 
     return res.status(201).json({
       message: 'Gallery photo uploaded successfully.',
-      id: result.insertId,
+      id: result.rows[0].id,
       title,
       filename: req.file.filename,
-      image_url: `${req.protocol}://${req.get('host')}/uploads/${encodeURIComponent(req.file.filename)}`,
+      image_url: getImageUrl(req, req.file.filename),
     })
   } catch (error) {
     if (req.file?.path && fs.existsSync(req.file.path)) {
@@ -85,8 +90,8 @@ export async function deleteGalleryPhoto(req, res) {
       })
     }
 
-    const [rows] = await getPool().execute(
-      'SELECT filename FROM gallery WHERE id = ?',
+    const { rows } = await getPool().query(
+      'SELECT filename FROM public.gallery WHERE id = $1',
       [id]
     )
 
@@ -96,10 +101,16 @@ export async function deleteGalleryPhoto(req, res) {
       })
     }
 
-    await getPool().execute(
-      'DELETE FROM gallery WHERE id = ?',
+    const result = await getPool().query(
+      'DELETE FROM public.gallery WHERE id = $1',
       [id]
     )
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        message: 'Gallery photo not found.',
+      })
+    }
 
     const filename = path.basename(rows[0].filename)
     const filePath = path.join(uploadDirectory, filename)
@@ -120,7 +131,7 @@ export async function deleteGalleryPhoto(req, res) {
   }
 }
 
-// Website Image Manager: supported pages and image slots
+// Supported website pages and image slots
 const WEBSITE_IMAGE_SLOTS = {
   about: [
     {
@@ -156,6 +167,7 @@ const WEBSITE_IMAGE_SLOTS = {
   ],
 }
 
+// Get website images
 export async function getWebsiteImages(req, res) {
   try {
     const pageKey = String(req.query.page || '').trim().toLowerCase()
@@ -166,10 +178,10 @@ export async function getWebsiteImages(req, res) {
       })
     }
 
-    const [rows] = await getPool().execute(
+    const { rows } = await getPool().query(
       `SELECT id, page_key, image_key, title, image_url, updated_at
-       FROM website_images
-       WHERE page_key = ?
+       FROM public.website_images
+       WHERE page_key = $1
        ORDER BY id ASC`,
       [pageKey]
     )
@@ -201,8 +213,7 @@ export async function getWebsiteImages(req, res) {
   }
 }
 
-
-// Replace an image on a website page
+// Replace a website image
 export async function replaceWebsiteImage(req, res) {
   let uploadedFilePath = null
 
@@ -234,35 +245,45 @@ export async function replaceWebsiteImage(req, res) {
 
     uploadedFilePath = req.file.path
 
-    // Save a relative URL so the frontend can use its configured API URL.
     const imageUrl = `/uploads/${encodeURIComponent(req.file.filename)}`
 
-    const [existingRows] = await getPool().execute(
+    const { rows: existingRows } = await getPool().query(
       `SELECT id, image_url
-       FROM website_images
-       WHERE page_key = ? AND image_key = ?`,
+       FROM public.website_images
+       WHERE page_key = $1 AND image_key = $2`,
       [pageKey, imageKey]
     )
 
-    await getPool().execute(
-      `INSERT INTO website_images
+    const { rows } = await getPool().query(
+      `INSERT INTO public.website_images
          (page_key, image_key, title, image_url)
-       VALUES (?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE
-         title = VALUES(title),
-         image_url = VALUES(image_url)`,
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (page_key, image_key)
+       DO UPDATE SET
+         title = EXCLUDED.title,
+         image_url = EXCLUDED.image_url,
+         updated_at = NOW()
+       RETURNING id`,
       [pageKey, imageKey, imageSlot.title, imageUrl]
     )
 
-    // Delete the previous uploaded file only if it was stored in /uploads.
+    // Remove the previous file if it was stored locally.
     if (existingRows.length > 0) {
       const previousUrl = existingRows[0].image_url
 
-      if (typeof previousUrl === 'string' &&
-          previousUrl.startsWith('/uploads/')) {
-        const previousFilename = path.basename(
-          decodeURIComponent(previousUrl.slice('/uploads/'.length))
-        )
+      if (
+        typeof previousUrl === 'string' &&
+        previousUrl.startsWith('/uploads/')
+      ) {
+        let previousFilename = ''
+
+        try {
+          previousFilename = path.basename(
+            decodeURIComponent(previousUrl.slice('/uploads/'.length))
+          )
+        } catch {
+          previousFilename = ''
+        }
 
         const previousFilePath = path.join(
           uploadDirectory,
@@ -281,6 +302,7 @@ export async function replaceWebsiteImage(req, res) {
 
     return res.json({
       message: 'Website image replaced successfully.',
+      id: rows[0].id,
       page_key: pageKey,
       image_key: imageKey,
       title: imageSlot.title,

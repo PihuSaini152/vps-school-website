@@ -1,4 +1,3 @@
-
 import { getPool } from '../config/db.js'
 
 export async function createJobApplication(req, res) {
@@ -26,7 +25,9 @@ export async function createJobApplication(req, res) {
     })
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+  const normalizedEmail = email.trim()
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
     return res.status(400).json({
       message: 'Please enter a valid email address.',
     })
@@ -39,8 +40,8 @@ export async function createJobApplication(req, res) {
   }
 
   try {
-    const [result] = await getPool().execute(
-      `INSERT INTO job_applications
+    const result = await getPool().query(
+      `INSERT INTO public.job_applications
       (
         full_name,
         mobile_number,
@@ -51,11 +52,12 @@ export async function createJobApplication(req, res) {
         total_experience,
         additional_message
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING id`,
       [
         fullName.trim(),
         mobile.trim(),
-        email.trim(),
+        normalizedEmail,
         applyingFor.trim(),
         qualification.trim(),
         experienceType,
@@ -66,7 +68,7 @@ export async function createJobApplication(req, res) {
 
     return res.status(201).json({
       message: 'Job application submitted successfully!',
-      id: result.insertId,
+      id: result.rows[0].id,
     })
   } catch (error) {
     console.error('Job application save failed:', error.message)

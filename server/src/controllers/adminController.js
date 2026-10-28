@@ -53,54 +53,38 @@ export async function adminLogin(req, res) {
   }
 }
 
-// Get admission enquiries
 export async function getAdmissionEnquiries(_req, res) {
   try {
-    const [rows] = await getPool().execute(
-      `SELECT
-        id,
-        student_name,
-        applying_class,
-        date_of_birth,
-        parent_name,
-        mobile_number,
-        whatsapp_number,
-        email,
-        current_school,
-        message,
-        consent,
-        created_at
-       FROM admission_enquiries
+    const { rows } = await getPool().query(
+      `SELECT id, student_name, applying_class, date_of_birth,
+              parent_name, mobile_number, whatsapp_number, email,
+              current_school, message, consent, created_at
+       FROM public.admission_enquiries
        ORDER BY created_at DESC`
     )
 
     return res.json(rows)
   } catch (error) {
     console.error('Admission enquiries fetch failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to load admission enquiries.',
     })
   }
 }
-
-// Delete an admission enquiry
 export async function deleteAdmissionEnquiry(req, res) {
   try {
     const { id } = req.params
 
     if (!/^\d+$/.test(id)) {
-      return res.status(400).json({
-        message: 'Invalid enquiry ID.',
-      })
+      return res.status(400).json({ message: 'Invalid enquiry ID.' })
     }
 
-    const [result] = await getPool().execute(
-      'DELETE FROM admission_enquiries WHERE id = ?',
+    const result = await getPool().query(
+      'DELETE FROM public.admission_enquiries WHERE id = $1',
       [id]
     )
 
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({
         message: 'Admission enquiry not found.',
       })
@@ -112,155 +96,143 @@ export async function deleteAdmissionEnquiry(req, res) {
     })
   } catch (error) {
     console.error('Admission enquiry deletion failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to delete admission enquiry.',
     })
   }
 }
-
-// Get notices for admin
 export async function getAdminNotices(_req, res) {
   try {
-    const [rows] = await getPool().execute(
+    const { rows } = await getPool().query(
       `SELECT id, title, body, is_published, created_at
-       FROM notices
+       FROM public.notices
        ORDER BY created_at DESC`
     )
 
     return res.json(rows)
   } catch (error) {
     console.error('Admin notices fetch failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to load notices.',
     })
   }
 }
-
-// Create notice
 export async function createNotice(req, res) {
   try {
-    const { title, body, is_published = 1 } = req.body
+    const { title, body, is_published = true } = req.body
 
     if (!title?.trim() || !body?.trim()) {
       return res.status(400).json({
-        message: 'Notice title and content are required.',
+        message: 'Title and notice content are required.',
       })
     }
 
-    const [result] = await getPool().execute(
-      `INSERT INTO notices (title, body, is_published)
-       VALUES (?, ?, ?)`,
-      [title.trim(), body.trim(), is_published ? 1 : 0]
+    const { rows } = await getPool().query(
+      `INSERT INTO public.notices (title, body, is_published)
+       VALUES ($1, $2, $3)
+       RETURNING id, title, body, is_published, created_at`,
+      [title.trim(), body.trim(), is_published]
     )
 
     return res.status(201).json({
+      success: true,
       message: 'Notice created successfully.',
-      id: result.insertId,
+      notice: rows[0],
     })
   } catch (error) {
     console.error('Notice creation failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to create notice.',
     })
   }
 }
 
-// Update notice
 export async function updateNotice(req, res) {
   try {
-    const { title, body, is_published = 1 } = req.body
     const { id } = req.params
+    const { title, body, is_published } = req.body
+
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({ message: 'Invalid notice ID.' })
+    }
 
     if (!title?.trim() || !body?.trim()) {
       return res.status(400).json({
-        message: 'Notice title and content are required.',
+        message: 'Title and notice content are required.',
       })
     }
 
-    const [result] = await getPool().execute(
-      `UPDATE notices
-       SET title = ?, body = ?, is_published = ?
-       WHERE id = ?`,
-      [title.trim(), body.trim(), is_published ? 1 : 0, id]
+    const { rows } = await getPool().query(
+      `UPDATE public.notices
+       SET title = $1, body = $2, is_published = $3
+       WHERE id = $4
+       RETURNING id, title, body, is_published, created_at`,
+      [title.trim(), body.trim(), is_published ?? true, id]
     )
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: 'Notice not found.',
-      })
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Notice not found.' })
     }
 
     return res.json({
+      success: true,
       message: 'Notice updated successfully.',
+      notice: rows[0],
     })
   } catch (error) {
     console.error('Notice update failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to update notice.',
     })
   }
 }
-
-// Delete notice
 export async function deleteNotice(req, res) {
   try {
-    const [result] = await getPool().execute(
-      'DELETE FROM notices WHERE id = ?',
-      [req.params.id]
+    const { id } = req.params
+
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({ message: 'Invalid notice ID.' })
+    }
+
+    const result = await getPool().query(
+      'DELETE FROM public.notices WHERE id = $1',
+      [id]
     )
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: 'Notice not found.',
-      })
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Notice not found.' })
     }
 
     return res.json({
+      success: true,
       message: 'Notice deleted successfully.',
     })
   } catch (error) {
     console.error('Notice deletion failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to delete notice.',
     })
   }
 }
-
-// Get job applications for admin
 export async function getJobApplications(_req, res) {
   try {
-    const [rows] = await getPool().execute(
-      `SELECT
-        id,
-        full_name,
-        mobile_number,
-        email,
-        applying_for,
-        qualification,
-        experience_type,
-        total_experience,
-        additional_message,
-        created_at
-       FROM job_applications
+    const { rows } = await getPool().query(
+      `SELECT id, full_name, mobile_number, email, applying_for,
+              qualification, experience_type, total_experience,
+              additional_message, created_at
+       FROM public.job_applications
        ORDER BY created_at DESC`
     )
 
     return res.json(rows)
   } catch (error) {
     console.error('Job applications fetch failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to load job applications.',
     })
   }
 }
 
-// Delete a job application
 export async function deleteJobApplication(req, res) {
   try {
     const { id } = req.params
@@ -271,12 +243,12 @@ export async function deleteJobApplication(req, res) {
       })
     }
 
-    const [result] = await getPool().execute(
-      'DELETE FROM job_applications WHERE id = ?',
+    const result = await getPool().query(
+      'DELETE FROM public.job_applications WHERE id = $1',
       [id]
     )
 
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({
         message: 'Job application not found.',
       })
@@ -288,7 +260,6 @@ export async function deleteJobApplication(req, res) {
     })
   } catch (error) {
     console.error('Job application deletion failed:', error.message)
-
     return res.status(500).json({
       message: 'Unable to delete job application.',
     })

@@ -31,38 +31,39 @@ export async function createEnquiry(req, res) {
   }
 
   try {
-    const [result] = await getPool().execute(
-      `INSERT INTO admission_enquiries
-      (
-        student_name,
-        applying_class,
-        date_of_birth,
-        parent_name,
-        mobile_number,
-        whatsapp_number,
-        email,
-        current_school,
-        message,
-        consent
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        studentName.trim(),
-        classApplying,
-        dateOfBirth,
-        guardianName.trim(),
-        mobile.trim(),
-        whatsapp?.trim() || null,
-        email.trim(),
-        currentSchool?.trim() || null,
-        message.trim(),
-        1
-      ]
-    )
+   const result = await getPool().query(
+  `INSERT INTO public.admission_enquiries
+  (
+    student_name,
+    applying_class,
+    date_of_birth,
+    parent_name,
+    mobile_number,
+    whatsapp_number,
+    email,
+    current_school,
+    message,
+    consent
+  )
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+  RETURNING id`,
+  [
+    studentName.trim(),
+    classApplying,
+    dateOfBirth,
+    guardianName.trim(),
+    mobile.trim(),
+    whatsapp?.trim() || null,
+    email.trim(),
+    currentSchool?.trim() || null,
+    message.trim(),
+    true
+  ]
+)
 
     return res.status(201).json({
       message: 'Admission enquiry submitted successfully!',
-      id: result.insertId
+     id: result.rows[0].id
     })
   } catch (error) {
     console.error('Admission enquiry save failed:', error)
