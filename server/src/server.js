@@ -16,9 +16,21 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const uploadsDirectory = path.resolve(__dirname, '../uploads')
+const allowedOrigins = [
+  'https://vpssikar.com',
+  'https://www.vpssikar.com',
+  'https://vps-school-website-wine.vercel.app',
+  'http://localhost:5173',
+]
 
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    }
+
+    return callback(new Error('Not allowed by CORS'))
+  },
 }))
 
 app.use(express.json({ limit: '1mb' }))
